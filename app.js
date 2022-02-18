@@ -20,6 +20,8 @@ const APP = {
         }
     },
     todo: function () {
+        // TODO
+        // 1. 완료 처리
         const todoInput = document.querySelector("#todo");
         const memoInput = document.querySelector("#memo");
         const todoForm = document.querySelector(".todoForm");
@@ -36,15 +38,15 @@ const APP = {
         todoForm.addEventListener("submit", handlerFormTodo);
         function handlerFormTodo(e) {
             e.preventDefault();
-            setTodo(todoInput.value, memoInput.value);
+            setTodo(Date.now(), todoInput.value, memoInput.value);
             todoInput.value = "";
             memoInput.value = "";
             todoInput.focus();
         }
 
         // todo 정보 셋팅
-        function setTodo(todo, memo) {
-            const todoData = { todo, memo };
+        function setTodo(id, todo, memo) {
+            const todoData = { id, todo, memo };
 
             if (!todo) {
                 alert("할 일을 입력해주세요.");
@@ -63,6 +65,7 @@ const APP = {
             const button = document.createElement("button");
             const todoList = document.querySelector(".todoList");
 
+            li.id = data.id;
             li.innerHTML = `
                 ${data.todo}
                 ${data.memo ? `<span>${data.memo}</span>` : ""}
@@ -77,11 +80,8 @@ const APP = {
         // Document todo 제거
         function deleteTodo(e) {
             const li = e.target.closest("li");
-            const index = Array.prototype.indexOf.call(li.parentNode.childNodes, li);
-
             li.remove();
-            todos.splice(index, 1);
-            saveTodo(todos);
+            saveTodo(todos.filter((list) => list.id !== li.id * 1));
         }
 
         // Local Storage todo 정보 저장
@@ -90,10 +90,9 @@ const APP = {
         }
     },
     media: function () {
-        /*
-        TODO: 1. 다음/이전 기능
-              2. 자동 재생 기능(재생 완료 시 다음으로)
-        */
+        // TODO
+        // 1. 다음/이전 기능
+        // 2. 자동 재생 기능(재생 완료 시 다음으로)
         const prevBtn = document.querySelector("#prev");
         const playBtn = document.querySelector("#play");
         const nextBtn = document.querySelector("#next");
@@ -146,14 +145,13 @@ const APP = {
         mediaForm.addEventListener("submit", handlerFormMedia);
         function handlerFormMedia(e) {
             const input = mediaForm.querySelector("input");
-
             e.preventDefault();
             setPlaylist(input.value);
             input.value = "";
         }
 
         // 플레이리스트 정보 셋팅
-        // TODO: 재생 중에 리스트 추가할 경우 media 바뀌지 않고 리스트만 추가되게
+        // BUG: 재생 중에 리스트 추가할 경우 media 바뀌지 않고 리스트만 추가되게
         function setPlaylist(val) {
             media.cueVideoById(val);
             const getVideoData = setInterval(function () {
@@ -191,13 +189,11 @@ const APP = {
         }
 
         // Document 플레이리스트 삭제
+        // BUG: 삭제 시 빈 화면(또는 다음 리스트 화면)으로 나오게
         function deletePlaylist(e) {
             const li = e.target.closest("li");
-            const index = Array.prototype.indexOf.call(li.parentNode.childNodes, li);
-
             li.remove();
-            lists.splice(index, 1);
-            savePlaylist(lists);
+            savePlaylist(lists.filter((list) => list.id !== li.id * 1));
         }
 
         // Document 플레이리스트 클릭 시
