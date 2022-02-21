@@ -152,6 +152,7 @@ const APP = {
 
         // 플레이리스트 정보 셋팅
         // BUG: 재생 중에 리스트 추가할 경우 media 바뀌지 않고 리스트만 추가되게
+        // 유튜브 ID 입력 > 플레이리스트에 추가(cuePlayList) > 플레이리스트 데이터(getPlaylist) 기준으로 Doc 리스트 생성
         function setPlaylist(val) {
             media.cueVideoById(val);
             const getVideoData = setInterval(function () {
@@ -173,27 +174,28 @@ const APP = {
         // Document 플레이리스트 추가
         function insertPlaylist(data) {
             const li = document.createElement("li");
+            const span = document.createElement("span");
             const button = document.createElement("button");
             const playList = document.querySelector(".playList");
 
             li.id = data.video_id;
-            li.innerHTML = `${data.title}`;
+            span.innerHTML = `${data.title}`;
             button.innerHTML = "삭제";
 
+            li.appendChild(span);
             li.appendChild(button);
             playList.appendChild(li);
-            li.addEventListener("click", (e) => {
-                playVideo(e.target.id);
+            span.addEventListener("click", (e) => {
+                playVideo(e.target.parentNode.id);
             });
             button.addEventListener("click", deletePlaylist);
         }
 
         // Document 플레이리스트 삭제
-        // BUG: 삭제 시 빈 화면(또는 다음 리스트 화면)으로 나오게
         function deletePlaylist(e) {
             const li = e.target.closest("li");
             li.remove();
-            savePlaylist(lists.filter((list) => list.id !== li.id * 1));
+            savePlaylist(lists.filter((list) => list.video_id !== li.id));
         }
 
         // Document 플레이리스트 클릭 시
