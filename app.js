@@ -81,7 +81,8 @@ const APP = {
         function deleteTodo(e) {
             const li = e.target.closest("li");
             li.remove();
-            saveTodo(todos.filter((list) => list.id !== li.id * 1));
+            todos = todos.filter((list) => list.id !== li.id * 1);
+            saveTodo(todos);
         }
 
         // Local Storage todo 정보 저장
@@ -106,7 +107,7 @@ const APP = {
             lists.forEach((item) => insertPlaylist(item));
         }
 
-        // 초기 셋팅(api)
+        // 초기 셋팅(iframe)
         let media;
         const initMedia = setInterval(function () {
             if (YT.loaded === 1) {
@@ -145,30 +146,40 @@ const APP = {
         mediaForm.addEventListener("submit", handlerFormMedia);
         function handlerFormMedia(e) {
             const input = mediaForm.querySelector("input");
+            const val = input.value;
+            const subStr = val.substring(val.indexOf("v=") + 2);
             e.preventDefault();
-            setPlaylist(input.value);
+            setPlaylist(subStr);
             input.value = "";
         }
 
         // 플레이리스트 정보 셋팅
-        // BUG: 재생 중에 리스트 추가할 경우 media 바뀌지 않고 리스트만 추가되게
-        // 유튜브 ID 입력 > 플레이리스트에 추가(cuePlayList) > 플레이리스트 데이터(getPlaylist) 기준으로 Doc 리스트 생성
         function setPlaylist(val) {
-            media.cueVideoById(val);
-            const getVideoData = setInterval(function () {
-                const videoData = media.getVideoData();
-                const listData = {
-                    video_id: val,
-                    title: videoData.title,
-                };
+            // Doc 리스트 생성을 위한 임시 Dom 생성
+            const div = document.createElement("div");
+            div.id = "player2";
+            document.querySelector("body").appendChild(div);
 
-                if (videoData.video_id === val) {
-                    lists.push(listData);
-                    insertPlaylist(videoData);
-                    savePlaylist(lists);
+            const media2 = new YT.Player("player2", { videoId: val });
+            const getVideoData = setInterval(function () {
+                if (media2.u) {
+                    const videoData = media2.getVideoData();
+                    const listData = {
+                        video_id: val,
+                        title: videoData.title,
+                    };
+
+                    if (videoData.video_id === val && videoData.title !== "") {
+                        lists.push(listData);
+                        insertPlaylist(videoData);
+                        savePlaylist(lists);
+                    } else {
+                        alert("유튜브 ID 형식이 올바르지 않거나 재생이 불가능한 동영상 입니다.");
+                    }
                     clearInterval(getVideoData);
+                    document.querySelector("#player2").remove();
                 }
-            }, 1000);
+            }, 100);
         }
 
         // Document 플레이리스트 추가
@@ -195,7 +206,8 @@ const APP = {
         function deletePlaylist(e) {
             const li = e.target.closest("li");
             li.remove();
-            savePlaylist(lists.filter((list) => list.video_id !== li.id));
+            lists = lists.filter((list) => list.video_id !== li.id);
+            savePlaylist(lists);
         }
 
         // Document 플레이리스트 클릭 시

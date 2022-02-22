@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MY APP</title>
+        <link rel="stylesheet" href="./common.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MY APP</title>
-    <link rel="stylesheet" href="./common.css" />
-</head>
-
-<body>
-    <div class="clock">00:00:00</div>
-    <div class="todoWrap">
-        <form class="todoForm">
-            <input type="text" id="todo" placeholder="할 일 입력 후 엔터" />
-            <input type="text" id="memo" placeholder="메모 입력" />
-            <input type="submit" />
-        </form>
-        <ul class="todoList"></ul>
-    </div>
-    <div class="mediaWrap">
-        <div class="playerWrap">
-            <div id="player"></div>
-            <div class="controlBox">
-                <button type="button" id="prev">이전</button>
-                <button type="button" id="play">재생</button>
-                <button type="button" id="next">다음</button>
-            </div>
+    <body>
+        <div class="clock">00:00:00</div>
+        <div class="todoWrap">
+            <form class="todoForm">
+                <input type="text" id="todo" placeholder="할 일 입력 후 엔터" />
+                <input type="text" id="memo" placeholder="메모 입력" />
+                <input type="submit" />
+            </form>
+            <ul class="todoList"></ul>
         </div>
-        <form class="mediaForm">
-            <input type="text" placeholder="유튜브 ID 입력">
-        </form>
-        <ul class="playList"></ul>
-    </div>
+        <div class="mediaWrap">
+            <div class="playerWrap">
+                <div id="player"></div>
+                <div class="controlBox">
+                    <button type="button" id="prev">이전</button>
+                    <button type="button" id="play">재생</button>
+                    <button type="button" id="next">다음</button>
+                </div>
+            </div>
+            <form class="mediaForm">
+                <input type="text" placeholder="유튜브 링크 입력" />
+            </form>
+            <ul class="playList"></ul>
+        </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="./app.js"></script>
-</body>
-
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <script src="./app.js"></script>
+    </body>
 </html>
