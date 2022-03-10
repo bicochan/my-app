@@ -20,8 +20,6 @@ const APP = {
         }
     },
     todo: function () {
-        // TODO
-        // 1. 완료 처리
         const todoInput = document.querySelector("#todo");
         const memoInput = document.querySelector("#memo");
         const todoForm = document.querySelector(".todoForm");
@@ -46,7 +44,7 @@ const APP = {
 
         // todo 정보 셋팅
         function setTodo(id, todo, memo) {
-            const todoData = { id, todo, memo };
+            const todoData = { id, todo, memo, state: false };
 
             if (!todo) {
                 alert("할 일을 입력해주세요.");
@@ -63,18 +61,43 @@ const APP = {
         function insertTodo(data) {
             const li = document.createElement("li");
             const button = document.createElement("button");
+            const input = document.createElement("input");
             const todoList = document.querySelector(".todoList");
 
+            if (data.state) {
+                li.className = "success";
+                input.setAttribute("checked", true);
+            }
             li.id = data.id;
+            input.id = data.id;
+            input.setAttribute("type", "checkbox");
+
             li.innerHTML = `
                 ${data.todo}
                 ${data.memo ? `<span>${data.memo}</span>` : ""}
             `;
             button.innerHTML = "삭제";
 
+            li.appendChild(input);
             li.appendChild(button);
             todoList.appendChild(li);
+            input.addEventListener("input", handlerInput);
             button.addEventListener("click", deleteTodo);
+        }
+
+        function handlerInput(e) {
+            const id = e.target.id;
+            const li = document.getElementById(id);
+            const todo = todos.find((list) => list.id === id * 1);
+
+            if (todo.state) {
+                li.className = "";
+                todo.state = false;
+            } else {
+                li.className = "success";
+                todo.state = true;
+            }
+            saveTodo(todos);
         }
 
         // Document todo 제거
