@@ -114,9 +114,6 @@ const APP = {
         }
     },
     media: function () {
-        // TODO
-        // 1. 다음/이전 기능
-        // 2. 자동 재생 기능(재생 완료 시 다음으로)
         const prevBtn = document.querySelector("#prev");
         const playBtn = document.querySelector("#play");
         const nextBtn = document.querySelector("#next");
@@ -147,12 +144,27 @@ const APP = {
 
         // 상태 변경 시
         function onPlayerStateChange(e) {
-            if (e.data === 1) {
+            if (e.data === -1) {
+                // 시작 전
+            } else if (e.data === 0) {
+                // 종료
+                // 다음 리스트 자동재생
+                const mediaId = media.playerInfo.videoData.video_id;
+                const mediaIndex = lists.findIndex((list) => list.video_id === mediaId);
+                if (lists.length - 1 === mediaIndex) return;
+                media.loadVideoById(lists[mediaIndex + 1].video_id);
+            } else if (e.data === 1) {
+                // 재생 중
                 playBtn.innerHTML = "일시정지";
                 playBtn.id = "pause";
             } else if (e.data === 2) {
+                // 일시정지
                 playBtn.innerHTML = "재생";
                 playBtn.id = "play";
+            } else if (e.data === 3) {
+                // 버퍼링 중
+            } else if (e.data === 5) {
+                // 동영상 신호
             }
         }
 
