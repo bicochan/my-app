@@ -3,6 +3,7 @@ const APP = {
         this.clock();
         this.todo();
         this.media();
+        this.reset();
     },
     clock: function () {
         const clock = document.querySelector(".clock");
@@ -254,6 +255,15 @@ const APP = {
         function savePlaylist(data) {
             localStorage.setItem("play-list", JSON.stringify(data));
         }
+    },
+    reset: function () {
+        document.querySelector("#reset").addEventListener("click", function () {
+            if (confirm("정말 데이터를 초기화 하시겠어요?")) {
+                localStorage.removeItem("todos");
+                localStorage.removeItem("play-list");
+                location.reload();
+            }
+        });
     },
 };
 
