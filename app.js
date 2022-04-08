@@ -115,9 +115,7 @@ const APP = {
         }
     },
     media: function () {
-        const prevBtn = document.querySelector("#prev");
         const playBtn = document.querySelector("#play");
-        const nextBtn = document.querySelector("#next");
         const mediaForm = document.querySelector(".mediaForm");
         const storagePlaylist = localStorage.getItem("play-list");
 
@@ -130,7 +128,7 @@ const APP = {
 
         // 초기 셋팅(iframe)
         let media;
-        const initMedia = setInterval(function () {
+        initMedia = setInterval(function () {
             if (YT.loaded === 1) {
                 media = new YT.Player("player", {
                     videoId: lists.length > 0 ? lists[0].video_id : "",
@@ -139,8 +137,8 @@ const APP = {
                     },
                 });
                 clearInterval(initMedia);
+                console.log("Success initMedia!", media);
             }
-            console.log("Success initMedia!", media);
         }, 100);
 
         // 상태 변경 시
@@ -183,7 +181,7 @@ const APP = {
         function handlerFormMedia(e) {
             const input = mediaForm.querySelector("input");
             const val = input.value;
-            const subStr = val.substring(val.indexOf("v=") + 2);
+            const subStr = val.substring(val.indexOf(".be/") + 4);
             e.preventDefault();
             setPlaylist(subStr);
             input.value = "";
@@ -210,7 +208,7 @@ const APP = {
                         insertPlaylist(videoData);
                         savePlaylist(lists);
                     } else {
-                        alert("유튜브 ID 형식이 올바르지 않거나 재생이 불가능한 동영상 입니다.");
+                        alert("링크가 올바르지 않거나 저작권으로 인해 재생이 불가능한 동영상입니다.");
                     }
                     clearInterval(getVideoData);
                     document.querySelector("#player2").remove();
