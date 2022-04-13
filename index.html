@@ -1,38 +1,83 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>MY APP</title>
-        <link rel="stylesheet" href="./common.css" />
-    </head>
 
-    <body>
-        <button type="button" id="reset">초기화</button>
-        <div class="clock">00:00:00</div>
-        <div class="todoWrap">
-            <form class="todoForm">
-                <input type="text" id="todo" placeholder="할 일 입력 후 엔터" />
-                <input type="text" id="memo" placeholder="메모 입력" />
-                <input type="submit" />
-            </form>
-            <ul class="todoList"></ul>
-        </div>
-        <div class="mediaWrap">
-            <div class="playerWrap">
-                <div id="player"></div>
-                <div class="controlBox">
-                    <button type="button" id="play">재생</button>
-                </div>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MY APP</title>
+    <link rel="stylesheet" href="./common.css" />
+</head>
+
+<body>
+    <button type="button" id="reset">초기화</button>
+    <div class="clock">00:00:00</div>
+    <div class="todoWrap">
+        <form class="todoForm">
+            <input type="text" id="todo" placeholder="할 일 입력 후 엔터" />
+            <input type="text" id="memo" placeholder="메모 입력" />
+            <input type="submit" />
+        </form>
+        <ul class="todoList"></ul>
+    </div>
+    <div class="mediaWrap">
+        <div class="playerWrap">
+            <div id="player"></div>
+            <div class="controlBox">
+                <button type="button" id="play">재생</button>
             </div>
-            <form class="mediaForm">
-                <input type="text" placeholder="유튜브 링크 입력" />
-            </form>
-            <ul class="playList"></ul>
         </div>
+        <form class="mediaForm">
+            <input type="text" placeholder="유튜브 링크 입력" />
+        </form>
+        <ul class="playList"></ul>
+    </div>
 
-        <script src="https://www.youtube.com/iframe_api"></script>
-        <script src="./app.js"></script>
-    </body>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="./app.js"></script>
+</body>
+
+<!-- Channel Plugin Scripts -->
+<script>
+    (function () {
+        var w = window;
+        if (w.ChannelIO) {
+            return (window.console.error || window.console.log || function () { })('ChannelIO script included twice.');
+        }
+        var ch = function () {
+            ch.c(arguments);
+        };
+        ch.q = [];
+        ch.c = function (args) {
+            ch.q.push(args);
+        };
+        w.ChannelIO = ch;
+        function l() {
+            if (w.ChannelIOInitialized) {
+                return;
+            }
+            w.ChannelIOInitialized = true;
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
+            s.charset = 'UTF-8';
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        }
+        if (document.readyState === 'complete') {
+            l();
+        } else if (window.attachEvent) {
+            window.attachEvent('onload', l);
+        } else {
+            window.addEventListener('DOMContentLoaded', l, false);
+            window.addEventListener('load', l, false);
+        }
+    })();
+    ChannelIO('boot', {
+        "pluginKey": "af1140bc-b7f4-4a3c-bb4d-1effc64257ee"
+    });
+</script>
+<!-- End Channel Plugin -->
+
 </html>
