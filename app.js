@@ -275,8 +275,8 @@ const APP = {
         }
     },
     reset: function () {
-        document.querySelector("#reset").addEventListener("click", function () {
-            if (confirm("정말 데이터를 초기화 하시겠어요?")) {
+        document.querySelector("#allReset").addEventListener("click", function () {
+            if (confirm("정말 전체 데이터를 초기화 하시겠어요?")) {
                 localStorage.removeItem("todos");
                 localStorage.removeItem("play-list");
                 location.reload();
