@@ -25,6 +25,17 @@ const APP = {
         const memoInput = document.querySelector("#memo");
         const todoForm = document.querySelector(".todoForm");
         const storageTodos = localStorage.getItem("todos");
+        const todoList = document.querySelector(".todoList");
+        const resetBtn = document.querySelector("#todoReset");
+
+        // 데이터 초기화
+        resetBtn.addEventListener("click", () => {
+            if (confirm("정말 투두 리스트를 초기화 하시겠어요?")) {
+                todos = [];
+                saveTodo(todos);
+                todoList.innerHTML = "";
+            }
+        });
 
         // 초기 셋팅
         let todos = [];
@@ -63,7 +74,6 @@ const APP = {
             const li = document.createElement("li");
             const button = document.createElement("button");
             const input = document.createElement("input");
-            const todoList = document.querySelector(".todoList");
 
             if (data.state) {
                 li.className = "success";
@@ -118,6 +128,17 @@ const APP = {
         const playBtn = document.querySelector("#play");
         const mediaForm = document.querySelector(".mediaForm");
         const storagePlaylist = localStorage.getItem("play-list");
+        const playList = document.querySelector(".playList");
+        const resetBtn = document.querySelector("#mediaReset");
+
+        // 데이터 초기화
+        resetBtn.addEventListener("click", () => {
+            if (confirm("정말 유튜브 리스트를 초기화 하시겠어요?")) {
+                lists = [];
+                savePlaylist(lists);
+                playList.innerHTML = "";
+            }
+        });
 
         // 초기 셋팅(플레이리스트)
         let lists = [];
@@ -221,7 +242,6 @@ const APP = {
             const li = document.createElement("li");
             const span = document.createElement("span");
             const button = document.createElement("button");
-            const playList = document.querySelector(".playList");
 
             li.id = data.video_id;
             span.innerHTML = `${data.title}`;
