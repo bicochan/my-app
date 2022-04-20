@@ -3,6 +3,7 @@ const APP = {
         this.clock();
         this.todo();
         this.media();
+        this.stickyNote();
         this.reset();
     },
     clock: function () {
@@ -93,7 +94,7 @@ const APP = {
             li.appendChild(button);
             todoList.appendChild(li);
             input.addEventListener("input", handlerInput);
-            button.addEventListener("click", deleteTodo);
+            button.addEventListener("click", removeTodo);
         }
 
         function handlerInput(e) {
@@ -112,7 +113,7 @@ const APP = {
         }
 
         // Document todo 제거
-        function deleteTodo(e) {
+        function removeTodo(e) {
             const li = e.target.closest("li");
             li.remove();
             todos = todos.filter((list) => list.id !== li.id * 1);
@@ -253,11 +254,11 @@ const APP = {
             span.addEventListener("click", (e) => {
                 playVideo(e.target.parentNode.id);
             });
-            button.addEventListener("click", deletePlaylist);
+            button.addEventListener("click", removePlaylist);
         }
 
         // Document 플레이리스트 삭제
-        function deletePlaylist(e) {
+        function removePlaylist(e) {
             const li = e.target.closest("li");
             li.remove();
             lists = lists.filter((list) => list.video_id !== li.id);
@@ -273,6 +274,25 @@ const APP = {
         function savePlaylist(data) {
             localStorage.setItem("play-list", JSON.stringify(data));
         }
+    },
+    stickyNote: function () {
+        const stickyWrap = document.querySelector(".stickyWrap");
+        const addBtn = document.querySelector("#addSticky");
+
+        addBtn.addEventListener("click", createSticky);
+
+        function createSticky() {
+            const div = document.createElement("div");
+            const button = document.createElement("button");
+
+            div.id = `${Date.now()}`;
+            button.innerHTML = "삭제";
+            div.appendChild(button);
+            stickyWrap.appendChild(div);
+            button.addEventListener("click", removeSticky);
+        }
+
+        function removeSticky() {}
     },
     reset: function () {
         document.querySelector("#allReset").addEventListener("click", function () {
