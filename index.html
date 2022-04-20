@@ -10,10 +10,12 @@
 </head>
 
 <body>
-    <button type="button" id="allReset">초기화</button>
+    <button type="button" id="allReset">데이터 초기화</button>
+
     <div class="clock">00:00:00</div>
-    <button type="button" id="todoReset">투두리스트 초기화</button>
+
     <div class="todoWrap">
+        <button type="button" id="todoReset">투두리스트 초기화</button>
         <form class="todoForm">
             <input type="text" id="todo" placeholder="할 일 입력 후 엔터" />
             <input type="text" id="memo" placeholder="메모 입력" />
@@ -21,8 +23,9 @@
         </form>
         <ul class="todoList"></ul>
     </div>
-    <button type="button" id="mediaReset">유튜브리스트 초기화</button>
+
     <div class="mediaWrap">
+        <button type="button" id="mediaReset">유튜브리스트 초기화</button>
         <div class="playerWrap">
             <div id="player"></div>
             <div class="controlBox">
@@ -33,6 +36,10 @@
             <input type="text" placeholder="유튜브 링크 입력" />
         </form>
         <ul class="playList"></ul>
+    </div>
+
+    <div class="stickyWrap">
+        <button type="button" id="addSticky">스티커메모 추가</button>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
