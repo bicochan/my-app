@@ -9,8 +9,6 @@ const APP = {
     clock: function () {
         const clock = document.querySelector(".clock");
 
-        setInterval(getClock, 1000);
-
         function getClock() {
             const today = new Date();
             clock.innerHTML = `${transformStr(today.getHours())}:${transformStr(today.getMinutes())}:${transformStr(today.getSeconds())}`;
@@ -20,14 +18,116 @@ const APP = {
                 return String(str).padStart(2, "0");
             }
         }
+
+        setInterval(getClock, 1000);
     },
     todo: function () {
         const todoInput = document.querySelector("#todo");
         const memoInput = document.querySelector("#memo");
-        const todoForm = document.querySelector(".todoForm");
-        const storageTodos = localStorage.getItem("todos");
-        const todoList = document.querySelector(".todoList");
         const resetBtn = document.querySelector("#todoReset");
+        const todoForm = document.querySelector(".todoForm");
+        const todoList = document.querySelector(".todoList");
+        const storageTodos = localStorage.getItem("todos");
+
+        const updateTodo = (() => {
+            let todos = [];
+
+            return {
+                add: (data) => {
+                    todos.push(data);
+                    return todos;
+                },
+                remove: (target) => {
+                    todos = todos.filter((item) => item.id !== target.id * 1);
+                    return todos;
+                },
+                done: (target, el) => {
+                    const t = todos.find((list) => list.id === target.id * 1);
+                    t.state = !t.state;
+                    t.state ? (el.className = "success") : (el.className = "");
+                    return todos;
+                },
+            };
+        })();
+
+        // todo 입력
+        function handlerTodoForm(e) {
+            const todoData = {
+                id: Date.now(),
+                text: todoInput.value,
+                memo: memoInput.value,
+                state: false,
+            };
+
+            e.preventDefault();
+            if (!todoData.text) {
+                alert("할 일을 입력해주세요.");
+                todoInput.focus();
+                return;
+            }
+
+            createTodo(todoData);
+            saveTodo(updateTodo.add(todoData));
+            todoInput.value = "";
+            memoInput.value = "";
+            todoInput.focus();
+        }
+
+        // Document todo 생성
+        function createTodo(data) {
+            const li = document.createElement("li");
+            const button = document.createElement("button");
+            const input = document.createElement("input");
+
+            li.id = data.id;
+            li.innerHTML = `
+                ${data.text}
+                ${data.memo ? `<span>${data.memo}</span>` : ""}
+            `;
+
+            input.id = data.id;
+            input.setAttribute("type", "checkbox");
+            if (data.state) {
+                li.className = "success";
+                input.setAttribute("checked", true);
+            }
+            li.appendChild(input);
+
+            button.innerHTML = "삭제";
+            li.appendChild(button);
+
+            todoList.appendChild(li);
+
+            input.addEventListener("input", handlerCheckbox);
+            button.addEventListener("click", removeTodo);
+        }
+
+        function handlerCheckbox(e) {
+            const target = e.target;
+            const li = document.getElementById(target.id);
+            saveTodo(updateTodo.done(target, li));
+        }
+
+        // Document todo 제거
+        function removeTodo(e) {
+            const target = e.target.closest("li");
+            target.remove();
+            saveTodo(updateTodo.remove(target));
+        }
+
+        // Local Storage todo 저장
+        function saveTodo(data) {
+            localStorage.setItem("todos", JSON.stringify(data));
+        }
+
+        // 초기 셋팅
+        if (storageTodos !== null) {
+            const s = JSON.parse(storageTodos);
+            s.forEach((item) => {
+                updateTodo.add(item);
+                createTodo(item);
+            });
+        }
 
         // 데이터 초기화
         resetBtn.addEventListener("click", () => {
@@ -38,92 +138,7 @@ const APP = {
             }
         });
 
-        // 초기 셋팅
-        let todos = [];
-        if (storageTodos !== null) {
-            todos = JSON.parse(storageTodos);
-            todos.forEach((item) => insertTodo(item));
-        }
-
-        // todo 입력
-        todoForm.addEventListener("submit", handlerFormTodo);
-        function handlerFormTodo(e) {
-            e.preventDefault();
-            setTodo(Date.now(), todoInput.value, memoInput.value);
-            todoInput.value = "";
-            memoInput.value = "";
-            todoInput.focus();
-        }
-
-        // todo 정보 셋팅
-        function setTodo(id, todo, memo) {
-            const todoData = { id, todo, memo, state: false };
-
-            if (!todo) {
-                alert("할 일을 입력해주세요.");
-                todoInput.focus();
-                return;
-            }
-
-            todos.push(todoData);
-            insertTodo(todoData);
-            saveTodo(todos);
-        }
-
-        // Document todo 추가
-        function insertTodo(data) {
-            const li = document.createElement("li");
-            const button = document.createElement("button");
-            const input = document.createElement("input");
-
-            if (data.state) {
-                li.className = "success";
-                input.setAttribute("checked", true);
-            }
-            li.id = data.id;
-            input.id = data.id;
-            input.setAttribute("type", "checkbox");
-
-            li.innerHTML = `
-                ${data.todo}
-                ${data.memo ? `<span>${data.memo}</span>` : ""}
-            `;
-            button.innerHTML = "삭제";
-
-            li.appendChild(input);
-            li.appendChild(button);
-            todoList.appendChild(li);
-            input.addEventListener("input", handlerInput);
-            button.addEventListener("click", removeTodo);
-        }
-
-        function handlerInput(e) {
-            const id = e.target.id;
-            const li = document.getElementById(id);
-            const todo = todos.find((list) => list.id === id * 1);
-
-            if (todo.state) {
-                li.className = "";
-                todo.state = false;
-            } else {
-                li.className = "success";
-                todo.state = true;
-            }
-            saveTodo(todos);
-        }
-
-        // Document todo 제거
-        function removeTodo(e) {
-            const li = e.target.closest("li");
-            li.remove();
-            todos = todos.filter((list) => list.id !== li.id * 1);
-            saveTodo(todos);
-        }
-
-        // Local Storage todo 정보 저장
-        function saveTodo(data) {
-            localStorage.setItem("todos", JSON.stringify(data));
-        }
+        todoForm.addEventListener("submit", handlerTodoForm);
     },
     media: function () {
         const playBtn = document.querySelector("#play");
@@ -145,7 +160,7 @@ const APP = {
         let lists = [];
         if (storagePlaylist !== null) {
             lists = JSON.parse(storagePlaylist);
-            lists.forEach((item) => insertPlaylist(item));
+            lists.forEach((item) => createPlaylist(item));
         }
 
         // 초기 셋팅(iframe)
@@ -199,18 +214,18 @@ const APP = {
         });
 
         // 플레이리스트 입력
-        mediaForm.addEventListener("submit", handlerFormMedia);
-        function handlerFormMedia(e) {
+        mediaForm.addEventListener("submit", handlerMediaForm);
+        function handlerMediaForm(e) {
             const input = mediaForm.querySelector("input");
             const val = input.value;
             const subStr = val.substring(val.indexOf(".be/") + 4);
             e.preventDefault();
-            setPlaylist(subStr);
+            setPlaylistData(subStr);
             input.value = "";
         }
 
         // 플레이리스트 정보 셋팅
-        function setPlaylist(val) {
+        function setPlaylistData(val) {
             // Doc 리스트 생성을 위한 임시 Dom 생성
             const div = document.createElement("div");
             div.id = "player2";
@@ -227,7 +242,7 @@ const APP = {
 
                     if (videoData.video_id === val && videoData.title !== "") {
                         lists.push(listData);
-                        insertPlaylist(videoData);
+                        createPlaylist(videoData);
                         savePlaylist(lists);
                     } else {
                         alert("링크가 올바르지 않거나 저작권으로 인해 재생이 불가능한 동영상입니다.");
@@ -239,7 +254,7 @@ const APP = {
         }
 
         // Document 플레이리스트 추가
-        function insertPlaylist(data) {
+        function createPlaylist(data) {
             const li = document.createElement("li");
             const span = document.createElement("span");
             const button = document.createElement("button");
@@ -259,9 +274,9 @@ const APP = {
 
         // Document 플레이리스트 삭제
         function removePlaylist(e) {
-            const li = e.target.closest("li");
-            li.remove();
-            lists = lists.filter((list) => list.video_id !== li.id);
+            const target = e.target.closest("li");
+            target.remove();
+            lists = lists.filter((list) => list.video_id !== target.id);
             savePlaylist(lists);
         }
 
@@ -278,21 +293,62 @@ const APP = {
     stickyNote: function () {
         const stickyWrap = document.querySelector(".stickyWrap");
         const addBtn = document.querySelector("#addSticky");
+        const storageNotes = localStorage.getItem("sticky-notes");
 
-        addBtn.addEventListener("click", createSticky);
-
-        function createSticky() {
-            const div = document.createElement("div");
-            const button = document.createElement("button");
-
-            div.id = `${Date.now()}`;
-            button.innerHTML = "삭제";
-            div.appendChild(button);
-            stickyWrap.appendChild(div);
-            button.addEventListener("click", removeSticky);
+        let notes = [];
+        if (storageNotes !== null) {
+            notes = JSON.parse(storageNotes);
+            notes.forEach((item) => createtNote(item));
         }
 
-        function removeSticky() {}
+        addBtn.addEventListener("click", createtNote);
+        function createtNote(data) {
+            const div = document.createElement("div");
+            const textarea = document.createElement("textarea");
+            const button = document.createElement("button");
+
+            div.id = data.id ? `${data.id}` : `${Date.now()}`;
+            div.className = "stickyNote";
+            textarea.value = data.text ? `${data.text}` : "";
+            button.innerHTML = "삭제";
+            div.appendChild(textarea);
+            div.appendChild(button);
+            stickyWrap.appendChild(div);
+
+            textarea.addEventListener("focusout", () => {
+                const noteData = {
+                    id: div.id,
+                    text: textarea.value,
+                };
+                setNoteData(noteData);
+            });
+            button.addEventListener("click", removeNote);
+        }
+
+        function setNoteData(data) {
+            const curNotes = notes.map((item) => {
+                return item.id;
+            });
+            if (curNotes.includes(data.id)) {
+                const target = notes.find((item) => item.id === data.id);
+                target.text = data.text;
+                saveNote(notes);
+                return;
+            }
+            notes.push(data);
+            saveNote(notes);
+        }
+
+        function removeNote(e) {
+            const target = e.target.closest("div");
+            target.remove();
+            notes = notes.filter((item) => item.id !== target.id);
+            saveNote(notes);
+        }
+
+        function saveNote(data) {
+            localStorage.setItem("sticky-notes", JSON.stringify(data));
+        }
     },
     reset: function () {
         document.querySelector("#allReset").addEventListener("click", function () {
