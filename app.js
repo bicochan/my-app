@@ -29,22 +29,26 @@ const APP = {
         const todoList = document.querySelector(".todoList");
         const storageTodos = localStorage.getItem("todos");
 
-        const updateTodo = (() => {
+        const todos = (() => {
             let todos = [];
 
             return {
                 add: (data) => {
                     todos.push(data);
-                    return todos;
+                    saveTodo(todos);
                 },
                 remove: (target) => {
                     todos = todos.filter((item) => item.id !== target.id * 1);
-                    return todos;
+                    saveTodo(todos);
                 },
                 done: (target, el) => {
                     const t = todos.find((list) => list.id === target.id * 1);
                     t.state = !t.state;
                     t.state ? (el.className = "success") : (el.className = "");
+                    saveTodo(todos);
+                },
+                reset: () => {
+                    todos = [];
                     return todos;
                 },
             };
@@ -52,7 +56,7 @@ const APP = {
 
         // todo 입력
         function handlerTodoForm(e) {
-            const todoData = {
+            const data = {
                 id: Date.now(),
                 text: todoInput.value,
                 memo: memoInput.value,
@@ -60,14 +64,14 @@ const APP = {
             };
 
             e.preventDefault();
-            if (!todoData.text) {
+            if (!data.text) {
                 alert("할 일을 입력해주세요.");
                 todoInput.focus();
                 return;
             }
 
-            createTodo(todoData);
-            saveTodo(updateTodo.add(todoData));
+            createTodo(data);
+            todos.add(data);
             todoInput.value = "";
             memoInput.value = "";
             todoInput.focus();
@@ -105,14 +109,14 @@ const APP = {
         function handlerCheckbox(e) {
             const target = e.target;
             const li = document.getElementById(target.id);
-            saveTodo(updateTodo.done(target, li));
+            todos.done(target, li);
         }
 
         // Document todo 제거
         function removeTodo(e) {
             const target = e.target.closest("li");
             target.remove();
-            saveTodo(updateTodo.remove(target));
+            todos.remove(target);
         }
 
         // Local Storage todo 저장
@@ -124,7 +128,7 @@ const APP = {
         if (storageTodos !== null) {
             const s = JSON.parse(storageTodos);
             s.forEach((item) => {
-                updateTodo.add(item);
+                todos.add(item);
                 createTodo(item);
             });
         }
@@ -132,8 +136,7 @@ const APP = {
         // 데이터 초기화
         resetBtn.addEventListener("click", () => {
             if (confirm("정말 투두 리스트를 초기화 하시겠어요?")) {
-                todos = [];
-                saveTodo(todos);
+                saveTodo(todos.reset());
                 todoList.innerHTML = "";
             }
         });
@@ -295,60 +298,155 @@ const APP = {
         const addBtn = document.querySelector("#addSticky");
         const storageNotes = localStorage.getItem("sticky-notes");
 
-        let notes = [];
-        if (storageNotes !== null) {
-            notes = JSON.parse(storageNotes);
-            notes.forEach((item) => createtNote(item));
-        }
+        const notes = (() => {
+            let notes = [];
 
-        addBtn.addEventListener("click", createtNote);
+            return {
+                add: (data) => {
+                    const curNotes = notes.map((item) => item.id);
+                    if (curNotes.includes(data.id)) {
+                        const target = notes.find((item) => item.id === data.id);
+                        target.text = data.text;
+                        saveNote(notes);
+                        return;
+                    }
+                    notes.push(data);
+                    saveNote(notes);
+                },
+                remove: (target) => {
+                    notes = notes.filter((item) => item.id !== target.id);
+                    console.log("remove", notes);
+                    saveNote(notes);
+                },
+                reset: () => {
+                    notes = [];
+                    saveNote(notes);
+                },
+            };
+        })();
+
         function createtNote(data) {
             const div = document.createElement("div");
+            const header = document.createElement("header");
             const textarea = document.createElement("textarea");
             const button = document.createElement("button");
 
             div.id = data.id ? `${data.id}` : `${Date.now()}`;
             div.className = "stickyNote";
-            textarea.value = data.text ? `${data.text}` : "";
-            button.innerHTML = "삭제";
-            div.appendChild(textarea);
-            div.appendChild(button);
+            div.style.top = data.top ? data.top : "";
+            div.style.left = data.left ? data.left : "";
             stickyWrap.appendChild(div);
 
-            textarea.addEventListener("focusout", () => {
-                const noteData = {
-                    id: div.id,
-                    text: textarea.value,
-                };
-                setNoteData(noteData);
+            header.className = "stickyHeader";
+            div.appendChild(header);
+
+            textarea.value = data.text ? `${data.text}` : "";
+            textarea.style.width = data.width ? data.width : "";
+            textarea.style.height = data.height ? data.height : "";
+            div.appendChild(textarea);
+
+            button.innerHTML = "삭제";
+            div.appendChild(button);
+
+            header.addEventListener("mousedown", () => {
+                dragElement(header, div);
+            });
+            textarea.addEventListener("mousedown", () => {
+                div.style.zIndex = 100;
             });
             button.addEventListener("click", removeNote);
-        }
-
-        function setNoteData(data) {
-            const curNotes = notes.map((item) => {
-                return item.id;
-            });
-            if (curNotes.includes(data.id)) {
-                const target = notes.find((item) => item.id === data.id);
-                target.text = data.text;
-                saveNote(notes);
-                return;
-            }
-            notes.push(data);
-            saveNote(notes);
         }
 
         function removeNote(e) {
             const target = e.target.closest("div");
             target.remove();
-            notes = notes.filter((item) => item.id !== target.id);
-            saveNote(notes);
+            notes.remove(target);
         }
 
         function saveNote(data) {
             localStorage.setItem("sticky-notes", JSON.stringify(data));
         }
+
+        function dragElement(elmt, tail) {
+            let ePos1 = 0,
+                ePos2 = 0,
+                ePos3 = 0,
+                ePos4 = 0;
+
+            let tPos1 = 0,
+                tPos2 = 0,
+                tPos3 = 0,
+                tPos4 = 0;
+
+            function dragMouseDown(e) {
+                ePos3 = e.clientX;
+                ePos4 = e.clientY;
+
+                tPos3 = e.clientX;
+                tPos4 = e.clientY;
+
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                const allElmt = document.querySelectorAll(".stickyNote");
+                allElmt.forEach((item) => {
+                    item.style.zIndex = 10;
+                });
+                tail.style.zIndex = 20;
+
+                ePos1 = ePos3 - e.clientX;
+                ePos2 = ePos4 - e.clientY;
+                ePos3 = e.clientX;
+                ePos4 = e.clientY;
+
+                elmt.style.top = elmt.offsetTop - ePos2 / tPos3 + "px";
+                elmt.style.left = elmt.offsetLeft - ePos1 / tPos4 + "px";
+
+                tPos1 = tPos3 - e.clientX;
+                tPos2 = tPos4 - e.clientY;
+                tPos3 = e.clientX;
+                tPos4 = e.clientY;
+
+                tail.style.top = tail.offsetTop - tPos2 + "px";
+                tail.style.left = tail.offsetLeft - tPos1 + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+
+            elmt.onmousedown = dragMouseDown;
+        }
+
+        if (storageNotes !== null) {
+            const s = JSON.parse(storageNotes);
+            s.forEach((item) => {
+                createtNote(item);
+                notes.add(item);
+            });
+        }
+
+        window.onbeforeunload = function () {
+            const el = document.querySelectorAll(".stickyNote");
+            if (!el.length) return;
+            notes.reset();
+            el.forEach((item) => {
+                const noteData = {
+                    id: item.id,
+                    text: item.childNodes[1].value,
+                    width: item.childNodes[1].style.width,
+                    height: item.childNodes[1].style.height,
+                    top: item.style.top,
+                    left: item.style.left,
+                };
+                notes.add(noteData);
+            });
+        };
+
+        addBtn.addEventListener("click", createtNote);
     },
     reset: function () {
         document.querySelector("#allReset").addEventListener("click", function () {
