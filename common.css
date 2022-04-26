@@ -35,7 +35,7 @@ li.success {
 .stickyNote textarea {
     min-width: 200px;
     min-height: 200px;
-    padding: 22px 0 0;
+    padding: 26px 4px 4px;
 }
 
 .stickyNote button {

@@ -21,6 +21,10 @@ const APP = {
 
         setInterval(getClock, 1000);
     },
+    /* TODO
+    // 1. 투두리스트 및 메모 내용 수정 기능
+    // 2. 완료 항목 분류 기능
+    */
     todo: function () {
         const todoInput = document.querySelector("#todo");
         const memoInput = document.querySelector("#memo");
@@ -143,6 +147,11 @@ const APP = {
 
         todoForm.addEventListener("submit", handlerTodoForm);
     },
+    /* TODO
+    // 1. 한 곡/전곡 반복 기능
+    // 2. 리스트 자동 추가 기능(클립보드)
+    // 3. 코드 리팩토링
+    */
     media: function () {
         const playBtn = document.querySelector("#play");
         const mediaForm = document.querySelector(".mediaForm");
@@ -293,6 +302,9 @@ const APP = {
             localStorage.setItem("play-list", JSON.stringify(data));
         }
     },
+    /* TODO
+    // 1. 텍스트 전체 복사 기능
+    */
     stickyNote: function () {
         const stickyWrap = document.querySelector(".stickyWrap");
         const addBtn = document.querySelector("#addSticky");
