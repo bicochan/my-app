@@ -53,7 +53,7 @@ const APP = {
                 },
                 reset: () => {
                     todos = [];
-                    return todos;
+                    saveTodo(todos);
                 },
             };
         })();
@@ -92,6 +92,7 @@ const APP = {
                 ${data.text}
                 ${data.memo ? `<span>${data.memo}</span>` : ""}
             `;
+            todoList.appendChild(li);
 
             input.id = data.id;
             input.setAttribute("type", "checkbox");
@@ -104,12 +105,11 @@ const APP = {
             button.innerHTML = "삭제";
             li.appendChild(button);
 
-            todoList.appendChild(li);
-
             input.addEventListener("input", handlerCheckbox);
             button.addEventListener("click", removeTodo);
         }
 
+        // todo 완료
         function handlerCheckbox(e) {
             const target = e.target;
             const li = document.getElementById(target.id);
@@ -140,7 +140,7 @@ const APP = {
         // 데이터 초기화
         resetBtn.addEventListener("click", () => {
             if (confirm("정말 투두 리스트를 초기화 하시겠어요?")) {
-                saveTodo(todos.reset());
+                todos.reset();
                 todoList.innerHTML = "";
             }
         });
@@ -159,36 +159,25 @@ const APP = {
         const playList = document.querySelector(".playList");
         const resetBtn = document.querySelector("#mediaReset");
 
-        // 데이터 초기화
-        resetBtn.addEventListener("click", () => {
-            if (confirm("정말 유튜브 리스트를 초기화 하시겠어요?")) {
-                lists = [];
-                savePlaylist(lists);
-                playList.innerHTML = "";
-            }
-        });
+        const lists = (() => {
+            let lists = [];
 
-        // 초기 셋팅(플레이리스트)
-        let lists = [];
-        if (storagePlaylist !== null) {
-            lists = JSON.parse(storagePlaylist);
-            lists.forEach((item) => createPlaylist(item));
-        }
-
-        // 초기 셋팅(iframe)
-        let media;
-        initMedia = setInterval(function () {
-            if (YT.loaded === 1) {
-                media = new YT.Player("player", {
-                    videoId: lists.length > 0 ? lists[0].video_id : "",
-                    events: {
-                        onStateChange: onPlayerStateChange,
-                    },
-                });
-                clearInterval(initMedia);
-                console.log("Success initMedia!", media);
-            }
-        }, 100);
+            return {
+                add: (data) => {
+                    lists.push(data);
+                    savePlaylist(lists);
+                },
+                remove: (target) => {
+                    lists = lists.filter((item) => item.video_id !== target.id);
+                    savePlaylist(lists);
+                    console.log(lists);
+                },
+                reset: () => {
+                    lists = [];
+                    savePlaylist(lists);
+                },
+            };
+        })();
 
         // 상태 변경 시
         function onPlayerStateChange(e) {
@@ -237,32 +226,25 @@ const APP = {
         }
 
         // 플레이리스트 정보 셋팅
-        function setPlaylistData(val) {
-            // Doc 리스트 생성을 위한 임시 Dom 생성
-            const div = document.createElement("div");
-            div.id = "player2";
-            document.querySelector("body").appendChild(div);
+        function setPlaylistData(id) {
+            const API_KEY = "AIzaSyDEofmqOL3deN_SVX8bNGKidVAA5fZikKQ";
+            const url = `https://www.googleapis.com/youtube/v3/videos?id=${id}&key=${API_KEY}&fields=items(id,snippet(title))&part=snippet`;
+            const mediaData = {
+                video_id: id,
+                title: "",
+            };
 
-            const media2 = new YT.Player("player2", { videoId: val });
-            const getVideoData = setInterval(function () {
-                if (media2.u) {
-                    const videoData = media2.getVideoData();
-                    const listData = {
-                        video_id: val,
-                        title: videoData.title,
-                    };
-
-                    if (videoData.video_id === val && videoData.title !== "") {
-                        lists.push(listData);
-                        createPlaylist(videoData);
-                        savePlaylist(lists);
-                    } else {
-                        alert("링크가 올바르지 않거나 저작권으로 인해 재생이 불가능한 동영상입니다.");
-                    }
-                    clearInterval(getVideoData);
-                    document.querySelector("#player2").remove();
-                }
-            }, 100);
+            async function getApi() {
+                const response = fetch(url);
+                return response;
+            }
+            getApi()
+                .then((res) => res.json())
+                .then((data) => {
+                    mediaData.title = data.items[0].snippet.title;
+                    lists.add(mediaData);
+                    createPlaylist(mediaData);
+                });
         }
 
         // Document 플레이리스트 추가
@@ -272,12 +254,14 @@ const APP = {
             const button = document.createElement("button");
 
             li.id = data.video_id;
-            span.innerHTML = `${data.title}`;
-            button.innerHTML = "삭제";
-
-            li.appendChild(span);
-            li.appendChild(button);
             playList.appendChild(li);
+
+            span.innerHTML = `${data.title}`;
+            li.appendChild(span);
+
+            button.innerHTML = "삭제";
+            li.appendChild(button);
+
             span.addEventListener("click", (e) => {
                 playVideo(e.target.parentNode.id);
             });
@@ -288,8 +272,7 @@ const APP = {
         function removePlaylist(e) {
             const target = e.target.closest("li");
             target.remove();
-            lists = lists.filter((list) => list.video_id !== target.id);
-            savePlaylist(lists);
+            lists.remove(target);
         }
 
         // Document 플레이리스트 클릭 시
@@ -301,6 +284,41 @@ const APP = {
         function savePlaylist(data) {
             localStorage.setItem("play-list", JSON.stringify(data));
         }
+
+        // 초기 셋팅(플레이리스트)
+        if (storagePlaylist !== null) {
+            const s = JSON.parse(storagePlaylist);
+            s.forEach((item) => {
+                lists.add(item);
+                createPlaylist(item);
+            });
+        }
+
+        // 초기 셋팅(iframe)
+        let media;
+        initMedia = setInterval(function () {
+            const s = JSON.parse(storagePlaylist) || [];
+            const video_id = s.length > 0 ? s[0].video_id : "";
+
+            if (YT.loaded === 1) {
+                media = new YT.Player("player", {
+                    videoId: video_id,
+                    events: {
+                        onStateChange: onPlayerStateChange,
+                    },
+                });
+                clearInterval(initMedia);
+                console.log("Success initMedia!", media);
+            }
+        }, 100);
+
+        // 데이터 초기화
+        resetBtn.addEventListener("click", () => {
+            if (confirm("정말 유튜브 리스트를 초기화 하시겠어요?")) {
+                lists.reset();
+                playList.innerHTML = "";
+            }
+        });
     },
     /* TODO
     // 1. 텍스트 전체 복사 기능
@@ -311,7 +329,7 @@ const APP = {
         const storageNotes = localStorage.getItem("sticky-notes");
 
         const notes = (() => {
-            let notes = [];
+            const notes = [];
 
             return {
                 add: (data) => {
@@ -462,9 +480,10 @@ const APP = {
     },
     reset: function () {
         document.querySelector("#allReset").addEventListener("click", function () {
-            if (confirm("정말 전체 데이터를 초기화 하시겠어요?")) {
+            if (confirm("정말 모든 데이터를 초기화 하시겠어요?")) {
                 localStorage.removeItem("todos");
                 localStorage.removeItem("play-list");
+                localStorage.removeItem("sticky-notes");
                 location.reload();
             }
         });
