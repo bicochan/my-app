@@ -57,7 +57,7 @@ let sticky = () => {
         div.appendChild(textarea);
 
         button.innerHTML = "삭제";
-        div.appendChild(button);
+        header.appendChild(button);
 
         header.addEventListener("mousedown", () => {
             dragElement(header, div);
@@ -93,8 +93,6 @@ let sticky = () => {
             tPos4 = 0;
 
         let elementDrag = (e) => {
-            tail.style.zIndex = zIndex;
-
             ePos1 = ePos3 - e.clientX;
             ePos2 = ePos4 - e.clientY;
             ePos3 = e.clientX;
@@ -110,6 +108,7 @@ let sticky = () => {
 
             tail.style.top = tail.offsetTop - tPos2 + "px";
             tail.style.left = tail.offsetLeft - tPos1 + "px";
+            tail.style.zIndex = zIndex;
         };
 
         let closeDragElement = () => {

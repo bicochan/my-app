@@ -1,37 +1,90 @@
-li.success {
-    color: #b3b3b3;
-    text-decoration: line-through;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-
-.stickyNote {
-    display: inline-block;
-    position: absolute;
-    z-index: 1;
-    min-width: 200px;
-    min-height: 200px;
-    background-color: #f1f1f1;
-    border: 1px solid #d3d3d3;
-    font-size: 0;
-}
-
-.stickyNote .stickyHeader {
-    position: absolute;
-    z-index: 1;
+html,
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 22px;
-    background-color: #2196f3;
-    cursor: move;
+    height: 100%;
+    background-color: #efeee9;
+}
+.wrap {
+    position: relative;
+    min-width: 1200px;
 }
 
-.stickyNote textarea {
-    min-width: 200px;
-    min-height: 200px;
-    padding: 26px 4px 4px;
-}
-
-.stickyNote button {
+/* sticky */
+.stickyWrap {
     position: absolute;
     top: 0;
     right: 0;
+}
+.stickyWrap #addSticky {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background-color: #d9d3c3;
+    border: 0;
+    border-radius: 50%;
+    font-size: 0;
+    color: transparent;
+    cursor: pointer;
+}
+.stickyWrap .stickyNote {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: -240px;
     z-index: 1;
+    min-width: 240px;
+    min-height: 240px;
+    border: 0;
+    font-size: 0;
+}
+.stickyWrap .stickyNote .stickyHeader {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 28px;
+    padding: 0 8px;
+    background-color: #f4db5a;
+    border-radius: 10px 10px 0 0;
+    cursor: move;
+}
+.stickyWrap .stickyNote .stickyHeader button {
+    width: 14px;
+    height: 14px;
+    margin-left: auto;
+    background-color: #f54a3d;
+    border: 0;
+    border-radius: 50%;
+    font-size: 0;
+    color: transparent;
+    cursor: pointer;
+}
+.stickyWrap .stickyNote .stickyHeader button:hover {
+    background-color: #e0372a;
+}
+.stickyWrap .stickyNote textarea {
+    min-width: 240px;
+    min-height: 202px;
+    padding: 8px;
+    background-color: #f2e5a2;
+    border: 0;
+    border-radius: 0 0 10px 10px;
+    font-size: 14px;
+}
+.stickyWrap .stickyNote textarea:focus {
+    outline: none;
+}
+
+li.success {
+    color: #b3b3b3;
+    text-decoration: line-through;
 }
