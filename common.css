@@ -52,7 +52,7 @@ body {
 #todoReset {
     width: 24px;
     height: 24px;
-    background: #d9d3c3 url(/asset/img/rotate.png) no-repeat center / 12px;
+    background: #d9d3c3 url(./asset/img/rotate.png) no-repeat center / 12px;
     border: 0;
     border-radius: 50%;
     font-size: 0;
@@ -79,7 +79,7 @@ body {
     width: 40px;
     height: 40px;
     margin-top: 12px;
-    background: #000 url(/asset/img/plus.png) no-repeat center / 24px;
+    background: #000 url(./asset/img/plus.png) no-repeat center / 24px;
     border: 0;
     border-radius: 50%;
     font-size: 0;
@@ -125,7 +125,7 @@ body {
 .todoWrap .todoList li button {
     width: 20px;
     height: 20px;
-    background: url(/asset/img/trash.png) no-repeat center / 20px;
+    background: url(./asset/img/trash.png) no-repeat center / 20px;
     border: 0;
     font-size: 0;
     color: transparent;
@@ -151,7 +151,7 @@ body {
 #addSticky {
     width: 32px;
     height: 32px;
-    background: #000 url(/asset/img/plus.png) no-repeat center / 20px;
+    background: #000 url(./asset/img/plus.png) no-repeat center / 20px;
     border: 0;
     border-radius: 50%;
     font-size: 0;
