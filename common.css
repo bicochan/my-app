@@ -2,6 +2,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Noto Sans KR", sans-serif;
+}
+li,
+ol {
+    list-style: none;
+}
+button,
+input[type="submit"],
+input[type="checkbox"] {
+    cursor: pointer;
 }
 html,
 body {
@@ -13,28 +23,144 @@ body {
     background-color: #efeee9;
 }
 .wrap {
+    min-width: 1000px;
+}
+.inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* todo */
+.todoWrap {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    height: 600px;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.todoWrap .titWrap {
+    display: flex;
+    align-items: center;
+}
+.todoWrap .titWrap .tit {
+    font-size: 16px;
+    font-weight: 700;
+}
+#todoReset {
+    width: 24px;
+    height: 24px;
+    background: #d9d3c3 url(/asset/img/rotate.png) no-repeat center / 12px;
+    border: 0;
+    border-radius: 50%;
+    font-size: 0;
+    color: transparent;
+}
+.todoWrap .titWrap #todoReset {
+    margin-left: auto;
+}
+.todoWrap .todoForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 0;
+}
+.todoWrap .todoForm input[type="text"] {
+    width: 100%;
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid #b3b3b3;
+    border-radius: 4px;
+}
+.todoWrap .todoForm input[type="submit"] {
+    width: 40px;
+    height: 40px;
+    margin-top: 12px;
+    background: #000 url(/asset/img/plus.png) no-repeat center / 24px;
+    border: 0;
+    border-radius: 50%;
+    font-size: 0;
+    color: transparent;
+}
+.todoWrap .todoForm textarea {
+    width: 100%;
+    height: 80px;
+    padding: 8px;
+    border: 1px solid #b3b3b3;
+    border-radius: 4px;
+}
+.todoWrap .todoForm input + input,
+.todoWrap .todoForm input + textarea {
+    margin-top: 4px;
+}
+.todoWrap .todoList {
+    max-height: 360px;
+    margin-top: 24px;
+}
+.todoWrap .todoList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
-    min-width: 1200px;
+    padding: 8px 12px 8px 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.todoWrap .todoList li + li {
+    margin-top: 12px;
+}
+.todoWrap .todoList li p {
+    font-size: 14px;
+    color: #666;
+}
+.todoWrap .todoList li input[type="checkbox"] {
+    position: absolute;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+}
+.todoWrap .todoList li button {
+    width: 20px;
+    height: 20px;
+    background: url(/asset/img/trash.png) no-repeat center / 20px;
+    border: 0;
+    font-size: 0;
+    color: transparent;
+}
+
+/* media */
+.mediaWrap {
+    min-width: 640px;
+    height: 600px;
+    margin-left: 16px;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 /* sticky */
 .stickyWrap {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 32px;
+    right: 32px;
+}
+#addSticky {
+    width: 32px;
+    height: 32px;
+    background: #000 url(/asset/img/plus.png) no-repeat center / 20px;
+    border: 0;
+    border-radius: 50%;
+    font-size: 0;
+    color: transparent;
 }
 .stickyWrap #addSticky {
     position: absolute;
     top: 0;
     right: 0;
-    width: 32px;
-    height: 32px;
-    background-color: #d9d3c3;
-    border: 0;
-    border-radius: 50%;
-    font-size: 0;
-    color: transparent;
-    cursor: pointer;
 }
 .stickyWrap .stickyNote {
     display: inline-block;
@@ -44,7 +170,9 @@ body {
     z-index: 1;
     min-width: 240px;
     min-height: 240px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     border: 0;
+    border-radius: 10px;
     font-size: 0;
 }
 .stickyWrap .stickyNote .stickyHeader {
@@ -54,6 +182,7 @@ body {
     height: 28px;
     padding: 0 8px;
     background-color: #f4db5a;
+    border-bottom: 1px solid #f1d43e;
     border-radius: 10px 10px 0 0;
     cursor: move;
 }
@@ -66,14 +195,13 @@ body {
     border-radius: 50%;
     font-size: 0;
     color: transparent;
-    cursor: pointer;
 }
 .stickyWrap .stickyNote .stickyHeader button:hover {
     background-color: #e0372a;
 }
 .stickyWrap .stickyNote textarea {
     min-width: 240px;
-    min-height: 202px;
+    min-height: 212px;
     padding: 8px;
     background-color: #f2e5a2;
     border: 0;

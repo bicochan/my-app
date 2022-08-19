@@ -61,14 +61,11 @@ let todo = () => {
     // Document todo 생성
     let createTodo = (data) => {
         const li = document.createElement("li");
-        const button = document.createElement("button");
         const input = document.createElement("input");
+        const button = document.createElement("button");
 
         li.id = data.id;
-        li.innerHTML = `
-                ${data.text}
-                ${data.memo ? `<span>${data.memo}</span>` : ""}
-            `;
+        li.innerHTML = `${data.memo ? `<div>${data.text}<p>${data.memo}</p></div>` : `${data.text}`}`;
         todoList.appendChild(li);
 
         input.id = data.id;
