@@ -141,7 +141,7 @@ let media = () => {
     const firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    var media;
+    let media = null;
     window.onYouTubeIframeAPIReady = () => {
         media = new YT.Player("player", {
             videoId: video_id,

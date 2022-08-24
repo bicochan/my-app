@@ -41,30 +41,28 @@ let sticky = () => {
         const button = document.createElement("button");
 
         zIndex += 1;
-        div.id = data.id ? `${data.id}` : `${Date.now()}`;
+        div.id = `${data.id || Date.now()}`;
         div.className = "stickyNote";
-        div.style.top = data.top ? data.top : "";
-        div.style.left = data.left ? data.left : "";
+        div.style.top = data.top || "";
+        div.style.left = data.left || "";
         div.style.zIndex = zIndex;
         stickyWrap.appendChild(div);
 
         header.className = "stickyHeader";
         div.appendChild(header);
 
-        textarea.value = data.text ? `${data.text}` : "";
-        textarea.style.width = data.width ? data.width : "";
-        textarea.style.height = data.height ? data.height : "";
+        textarea.value = `${data.text || ""}`;
+        textarea.style.width = data.width || "";
+        textarea.style.height = data.height || "";
         div.appendChild(textarea);
 
         button.innerHTML = "삭제";
         header.appendChild(button);
 
-        header.addEventListener("mousedown", () => {
+        header.addEventListener("mouseover", () => {
             dragElement(header, div);
-            zIndex += 1;
-            div.style.zIndex = zIndex;
         });
-        textarea.addEventListener("mousedown", () => {
+        (header, textarea).addEventListener("mousedown", () => {
             zIndex += 1;
             div.style.zIndex = zIndex;
         });
