@@ -1,49 +1,60 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>MY APP</title>
-        <link rel="stylesheet" href="./common.css" />
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
-    </head>
 
-    <body>
-        <div class="wrap">
-            <button type="button" id="allReset">데이터 초기화</button>
-            <div class="clock">00:00:00</div>
-            <div class="inner">
-                <div class="todoWrap">
-                    <div class="titWrap">
-                        <h2 class="tit">TODO LIST</h2>
-                        <button type="button" id="todoReset">투두리스트 초기화</button>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MY APP</title>
+    <link rel="stylesheet" href="./asset/css/common.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="App"></div>
+
+    <!-- <div class="wrap">
+        <button type="button" id="allReset">데이터 초기화</button>
+        <div class="clock">00:00:00</div>
+        <div class="inner">
+            <div class="todoWrap">
+                <div class="titWrap">
+                    <h2 class="tit">TODO LIST</h2>
+                    <div class="resetBtnWrap">
+                        데이터 초기화<button type="button" id="todoReset" class="btnReset">투두리스트 초기화</button>
                     </div>
-                    <form class="todoForm">
-                        <input type="text" id="todo" placeholder="할 일 입력 후 엔터" />
-                        <textarea id="memo" placeholder="메모 입력"></textarea>
-                        <input type="submit" />
-                    </form>
-                    <ul class="todoList"></ul>
                 </div>
-                <div class="mediaWrap">
-                    <button type="button" id="mediaReset">유튜브리스트 초기화</button>
-                    <div class="playerWrap">
-                        <div id="player"></div>
-                        <div class="controlBox">
-                            <button type="button" id="play">재생</button>
-                        </div>
-                    </div>
-                    <form class="mediaForm">
-                        <input type="text" placeholder="유튜브 공유하기 링크 입력" />
-                    </form>
-                    <ul class="playList"></ul>
-                </div>
+                <form class="todoForm">
+                    <input type="text" id="todo" placeholder="할 일 입력 후 엔터" />
+                    <textarea id="memo" placeholder="메모 입력"></textarea>
+                    <input type="submit" />
+                </form>
+                <ul class="todoList"></ul>
             </div>
-            <div class="stickyWrap">
-                <button type="button" id="addSticky">스티커메모 추가</button>
+            <div class="mediaWrap">
+                <div class="titWrap">
+                    <h2 class="tit">YOUTUBE PLAYER</h2>
+                    <div class="resetBtnWrap">
+                        데이터 초기화<button type="button" id="mediaReset" class="btnReset">유튜브리스트 초기화</button>
+                    </div>
+                </div>
+                <div class="playerWrap">
+                    <div id="player"></div>
+                    <div class="controlBox">
+                        <button type="button" id="play">재생</button>
+                    </div>
+                </div>
+                <form class="mediaForm">
+                    <input type="text" placeholder="유튜브 공유하기 링크 입력" />
+                </form>
+                <ul class="playList"></ul>
             </div>
         </div>
-        <script type="module" src="./app.js"></script>
-    </body>
+        <div class="stickyWrap">
+            <button type="button" id="addSticky">스티커메모 추가</button>
+        </div>
+    </div> -->
+    <script src="./index.js" type="module"></script>
+</body>
+
 </html>

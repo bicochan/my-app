@@ -30,6 +30,39 @@ body {
     justify-content: space-between;
 }
 
+/* common */
+.titWrap {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.titWrap .tit {
+    font-size: 16px;
+    font-weight: 700;
+}
+.resetBtnWrap {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 14px;
+    color: #3c3c3c;
+}
+.resetBtnWrap .btnReset {
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+    background: #d9d3c3 url(../images/rotate.png) no-repeat center / 12px;
+    border: 0;
+    border-radius: 50%;
+    font-size: 0;
+    color: transparent;
+    transform: rotate(0deg);
+}
+.resetBtnWrap .btnReset:hover {
+    transform: rotate(360deg);
+    transition: transform 0.5s;
+}
+
 /* todo */
 .todoWrap {
     display: flex;
@@ -41,31 +74,10 @@ body {
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
-.todoWrap .titWrap {
-    display: flex;
-    align-items: center;
-}
-.todoWrap .titWrap .tit {
-    font-size: 16px;
-    font-weight: 700;
-}
-#todoReset {
-    width: 24px;
-    height: 24px;
-    background: #d9d3c3 url(./asset/img/rotate.png) no-repeat center / 12px;
-    border: 0;
-    border-radius: 50%;
-    font-size: 0;
-    color: transparent;
-}
-.todoWrap .titWrap #todoReset {
-    margin-left: auto;
-}
 .todoWrap .todoForm {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 8px;
     font-size: 0;
 }
 .todoWrap .todoForm input[type="text"] {
@@ -79,7 +91,7 @@ body {
     width: 40px;
     height: 40px;
     margin-top: 12px;
-    background: #000 url(./asset/img/plus.png) no-repeat center / 24px;
+    background: #000 url(../images/plus.png) no-repeat center / 24px;
     border: 0;
     border-radius: 50%;
     font-size: 0;
@@ -125,7 +137,7 @@ body {
 .todoWrap .todoList li button {
     width: 20px;
     height: 20px;
-    background: url(./asset/img/trash.png) no-repeat center / 20px;
+    background: url(../images/trash.png) no-repeat center / 20px;
     border: 0;
     font-size: 0;
     color: transparent;
@@ -140,6 +152,9 @@ body {
     background-color: #fff;
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+}
+.mediaWrap .mediaForm {
+    margin-top: 12px;
 }
 .mediaWrap .mediaForm input[type="text"] {
     width: 100%;
@@ -177,7 +192,7 @@ body {
 .mediaWrap .playList li button {
     width: 20px;
     height: 20px;
-    background: url(./asset/img/trash.png) no-repeat center / 20px;
+    background: url(../images/trash.png) no-repeat center / 20px;
     border: 0;
     font-size: 0;
     color: transparent;
@@ -192,7 +207,7 @@ body {
 #addSticky {
     width: 32px;
     height: 32px;
-    background: #000 url(./asset/img/plus.png) no-repeat center / 20px;
+    background: #000 url(../images/plus.png) no-repeat center / 20px;
     border: 0;
     border-radius: 50%;
     font-size: 0;
