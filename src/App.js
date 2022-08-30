@@ -1,7 +1,39 @@
-import Clock from "./Clock.js";
-// import { todo } from "./module/todo.js";
+import Clock from "./components/clock/Clock.js";
+import Todo from "./components/todo/Todo.js";
 // import { media } from "./module/media.js";
 // import { sticky } from "./module/sticky.js";
+
+export default function App({ $target }) {
+    this.state = {
+        time: new Date(),
+    };
+
+    this.setState = (newState) => {
+        this.state = newState;
+        clock.setState(this.state.time);
+    };
+
+    this.$wrap = document.createElement("div");
+    this.$wrap.className = "wrap";
+    $target.appendChild(this.$wrap);
+
+    const clock = new Clock({
+        $target: this.$wrap,
+        initialState: this.state.time,
+        onChange: (newTime) => {
+            this.setState({ time: newTime });
+        },
+    });
+
+    this.$inner = document.createElement("div");
+    this.$inner.className = "inner";
+    this.$wrap.appendChild(this.$inner);
+
+    const todo = new Todo({
+        $target: this.$inner,
+        initialState: [],
+    });
+}
 
 // const APP = {
 //     init: function () {
@@ -27,26 +59,3 @@ import Clock from "./Clock.js";
 // };
 
 // APP.init();
-
-export default function App({ $target }) {
-    this.state = {
-        time: new Date(),
-    };
-
-    this.setState = (nextState) => {
-        this.state = nextState;
-        clock.setState(this.state.time);
-    };
-
-    this.$element = document.createElement("div");
-    this.$element.className = "wrap";
-    $target.appendChild(this.$element);
-
-    const clock = new Clock({
-        $target: this.$element,
-        initialState: this.state.time,
-        onChange: (newTime) => {
-            this.setState({ time: newTime });
-        },
-    });
-}

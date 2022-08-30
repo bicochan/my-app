@@ -1,8 +1,8 @@
 export default function Clock({ $target, initialState, onChange }) {
     this.state = initialState;
 
-    this.setState = (nextState) => {
-        this.state = nextState;
+    this.setState = (newState) => {
+        this.state = newState;
         this.render();
     };
 
@@ -16,7 +16,9 @@ export default function Clock({ $target, initialState, onChange }) {
         this.$element.innerHTML = `
             ${transformStr(today.getHours())}:${transformStr(today.getMinutes())}:${transformStr(today.getSeconds())}
             `;
-        setTimeout(() => setInterval(onChange(new Date()), 1000));
+        setTimeout(() => {
+            onChange(new Date());
+        }, 1000);
     };
 
     this.render();

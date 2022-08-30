@@ -103,6 +103,7 @@ body {
     padding: 8px;
     border: 1px solid #b3b3b3;
     border-radius: 4px;
+    resize: none;
 }
 .todoWrap .todoForm input + input,
 .todoWrap .todoForm input + textarea {
@@ -134,7 +135,16 @@ body {
     width: 16px;
     height: 16px;
 }
-.todoWrap .todoList li button {
+.todoWrap .todoList li label {
+    width: 100%;
+    cursor: pointer;
+}
+.todoWrap .todoList li input[type="checkbox"]:checked + label,
+.todoWrap .todoList li input[type="checkbox"]:checked + label p {
+    color: #b3b3b3;
+    text-decoration: line-through;
+}
+.todoWrap .todoList li .btnDelete {
     width: 20px;
     height: 20px;
     background: url(../images/trash.png) no-repeat center / 20px;
@@ -266,9 +276,4 @@ body {
 }
 .stickyWrap .stickyNote textarea:focus {
     outline: none;
-}
-
-li.success {
-    color: #b3b3b3;
-    text-decoration: line-through;
 }
