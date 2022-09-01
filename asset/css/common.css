@@ -144,7 +144,7 @@ body {
     color: #b3b3b3;
     text-decoration: line-through;
 }
-.todoWrap .todoList li .btnDelete {
+.todoWrap .todoList li button {
     width: 20px;
     height: 20px;
     background: url(../images/trash.png) no-repeat center / 20px;

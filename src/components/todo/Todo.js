@@ -10,7 +10,7 @@ export default function Todo({ $target, initialState }) {
     this.state = initialState;
 
     this.setState = (newState) => {
-        this.state.push(newState);
+        this.state = newState;
         todoList.setState(this.state);
     };
 
@@ -25,15 +25,15 @@ export default function Todo({ $target, initialState }) {
             memo: "",
         },
         onSubmit: (todo) => {
-            this.setState(todo);
+            this.setState([...this.state, ...todo]);
         },
     });
 
     const todoList = new TodoList({
         $target: this.$element,
         initialState: [],
-        onDelete: (id) => {
-            console.log(this.state);
+        onChange: (todo) => {
+            this.setState(todo);
         },
     });
 }

@@ -1,4 +1,5 @@
 import InputText from "../common/InputText.js";
+import InputTextarea from "../common/InputTextarea.js";
 
 export default function TodoForm({ $target, initialState, onSubmit }) {
     this.state = initialState;
@@ -6,7 +7,7 @@ export default function TodoForm({ $target, initialState, onSubmit }) {
     this.setState = (newState) => {
         this.state = newState;
         inputText.setState(this.state.todo);
-        this.render();
+        inputTextarea.setState(this.state.memo);
     };
 
     this.$element = document.createElement("form");
@@ -15,36 +16,33 @@ export default function TodoForm({ $target, initialState, onSubmit }) {
 
     const inputText = new InputText({
         $target: this.$element,
-        initialState: { text: "", placeholder: "할 일 입력 후 엔터" },
+        initialState: { text: "", placeholder: "할 일 입력 후 Enter" },
         onChange: (text) => {
             this.setState({ ...this.state, todo: text });
         },
     });
 
-    this.$textarea = document.createElement("textarea");
-    this.$textarea.placeholder = "메모 입력";
-    this.$element.appendChild(this.$textarea);
+    const inputTextarea = new InputTextarea({
+        $target: this.$element,
+        initialState: { text: "", placeholder: "메모 입력" },
+        onChange: (text) => {
+            this.setState({ ...this.state, memo: text });
+        },
+    });
 
     this.$submit = document.createElement("input");
     this.$submit.type = "submit";
     this.$element.appendChild(this.$submit);
 
-    this.render = () => {
-        this.$textarea.value = this.state.memo;
-    };
-
-    this.render();
-
-    this.$textarea.addEventListener("input", (e) => {
-        this.setState({ ...this.state, memo: e.target.value });
-    });
-
     this.$element.addEventListener("submit", (e) => {
-        const data = {
-            id: Date.now(),
-            todo: this.state.todo,
-            memo: this.$textarea.value,
-        };
+        const data = [
+            {
+                id: Date.now(),
+                todo: this.state.todo,
+                memo: this.state.memo,
+                success: false,
+            },
+        ];
         e.preventDefault();
         this.setState({ todo: "", memo: "" });
         inputText.$element.focus();

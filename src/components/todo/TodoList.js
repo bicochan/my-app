@@ -1,33 +1,28 @@
-export default function TodoList({ $target, initialState, onDelete }) {
+import TodoItem from "./TodoItem.js";
+
+export default function TodoList({ $target, initialState, onChange }) {
     this.state = initialState;
 
     this.setState = (newState) => {
         this.state = newState;
-        this.render();
+        if (this.state.length) {
+            this.$element.innerHTML = "";
+            this.state.map((item) => todoItem.setState(item));
+        }
     };
 
     this.$element = document.createElement("ul");
     this.$element.className = "todoList";
     $target.appendChild(this.$element);
 
-    this.render = () => {
-        if (this.state.length > 0) {
-            this.$element.innerHTML = `
-                ${this.state
-                    .map((item) => {
-                        const { id, todo, memo } = item;
-                        return (this.$element.innerHTML = `
-                        <li id="${id}">
-                            <input type="checkbox" id="chk_${id}" >
-                            <label for="chk_${id}">${memo ? `<div>${todo}<p>${memo}</p></div>` : `${todo}`}</label>
-                            <button class="btnDelete">삭제</button>
-                        </li>
-                    `);
-                    })
-                    .join("")}
-            `;
-        }
-    };
-
-    this.render();
+    const todoItem = new TodoItem({
+        $target: this.$element,
+        initialState: this.state,
+        onRemove: (id) => {
+            const newTodo = this.state.filter((item) => {
+                return item.id !== id * 1;
+            });
+            onChange(newTodo);
+        },
+    });
 }
