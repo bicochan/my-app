@@ -5,10 +5,8 @@ export default function TodoList({ $target, initialState, onChange }) {
 
     this.setState = (newState) => {
         this.state = newState;
-        if (this.state.length) {
-            this.$element.innerHTML = "";
-            this.state.map((item) => todoItem.setState(item));
-        }
+        this.$element.innerHTML = "";
+        todoItem.setState(this.state);
     };
 
     this.$element = document.createElement("ul");
@@ -18,11 +16,16 @@ export default function TodoList({ $target, initialState, onChange }) {
     const todoItem = new TodoItem({
         $target: this.$element,
         initialState: this.state,
+        onSuccess: (id) => {
+            const newState = [...this.state];
+            const targetIndex = newState.findIndex((item) => item.id === id);
+            newState[targetIndex].success = true;
+            onChange(newState);
+        },
         onRemove: (id) => {
-            const newTodo = this.state.filter((item) => {
-                return item.id !== id * 1;
-            });
-            onChange(newTodo);
+            let newState = [...this.state];
+            newState = newState.filter((item) => item.id !== id * 1);
+            onChange(newState);
         },
     });
 }

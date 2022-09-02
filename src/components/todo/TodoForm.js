@@ -1,5 +1,5 @@
-import InputText from "../common/InputText.js";
-import InputTextarea from "../common/InputTextarea.js";
+import InputText from "../forms/InputText.js";
+import InputTextarea from "../forms/InputTextarea.js";
 
 export default function TodoForm({ $target, initialState, onSubmit }) {
     this.state = initialState;
@@ -44,6 +44,14 @@ export default function TodoForm({ $target, initialState, onSubmit }) {
             },
         ];
         e.preventDefault();
+
+        const [{ todo }] = data;
+        if (!todo) {
+            alert("할 일을 입력해주세요.");
+            inputText.$element.focus();
+            return;
+        }
+
         this.setState({ todo: "", memo: "" });
         inputText.$element.focus();
         onSubmit(data);

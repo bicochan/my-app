@@ -1,35 +1,36 @@
-export default function TodoItem({ $target, initialState, onRemove }) {
+export default function TodoItem({ $target, initialState, onSuccess, onRemove }) {
     this.state = initialState;
 
     this.setState = (newState) => {
         this.state = newState;
-        this.render();
+        this.state.map((item) => this.render(item));
     };
 
-    this.render = () => {
-        const { id, todo, memo } = this.state;
-
-        if (!todo) {
-            alert("할 일을 입력해주세요.");
-            return;
-        }
+    this.render = (item) => {
+        const { id, todo, memo, success } = item;
 
         this.$element = document.createElement("li");
         this.$element.id = id;
 
-        this.$button = document.createElement("button");
-        this.$button.id = id;
-        this.$button.innerHTML = "삭제";
-
         this.$element.innerHTML = `
-            <input type="checkbox" id="chk_${id}" >
+            <input type="checkbox" id="chk_${id}" ${success ? "checked" : ""} >
             <label for="chk_${id}">${memo ? `<div>${todo}<p>${memo}</p></div>` : `${todo}`}</label>
+            <button id="btn_${id}">삭제</button>
         `;
-        this.$element.appendChild(this.$button);
         $target.appendChild(this.$element);
 
-        this.$button.addEventListener("click", (e) => {
-            onRemove(e.target.id);
+        const checkbox = document.querySelector(`#chk_${id}`);
+        checkbox.addEventListener("change", (e) => {
+            const targetId = e.target.id.substring(4) * 1;
+            onSuccess(targetId);
+        });
+
+        const button = document.querySelector(`#btn_${id}`);
+        button.addEventListener("click", (e) => {
+            const targetId = e.target.id.substring(4) * 1;
+            onRemove(targetId);
         });
     };
+
+    this.state.map((item) => this.render(item));
 }
