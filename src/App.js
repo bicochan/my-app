@@ -8,7 +8,7 @@ import { getLocalStorage, setLocalStorage } from "./utilities/localStorage.js";
 export default function App({ $target }) {
     this.state = {
         time: new Date(),
-        todo: getLocalStorage("todo") || [],
+        todo: getLocalStorage("todos") || [],
     };
 
     this.setState = (newState) => {
@@ -35,8 +35,8 @@ export default function App({ $target }) {
     const todo = new Todo({
         $target: this.$inner,
         initialState: this.state.todo,
-        updateTodo: (todo) => {
-            setLocalStorage("todo", todo);
+        updateStorage: (data) => {
+            setLocalStorage("todos", data);
         },
     });
 }

@@ -1,23 +1,31 @@
 /* TODO
-// 1. 투두리스트 & 메모 내용 수정 기능
+// 1. 투두리스트 수정 기능
 // 2. 완료 항목 분류 기능
-// 3. 데이터 리셋 기능
 */
+import Title from "../layout/Title.js";
 import TodoForm from "./TodoForm.js";
 import TodoList from "./TodoList.js";
 
-export default function Todo({ $target, initialState, updateTodo }) {
+export default function Todo({ $target, initialState, updateStorage }) {
     this.state = initialState;
 
     this.setState = (newState) => {
         this.state = newState;
         todoList.setState(this.state);
-        updateTodo(this.state);
+        updateStorage(this.state);
     };
 
     this.$element = document.createElement("div");
     this.$element.className = "todoWrap";
     $target.appendChild(this.$element);
+
+    const title = new Title({
+        $target: this.$element,
+        initialState: "TODO LIST",
+        eventBus: (data) => {
+            this.setState(data);
+        },
+    });
 
     const todoForm = new TodoForm({
         $target: this.$element,
@@ -38,11 +46,3 @@ export default function Todo({ $target, initialState, updateTodo }) {
         },
     });
 }
-
-//     // 데이터 초기화
-//     resetBtn.addEventListener("click", () => {
-//         if (confirm("정말 투두 리스트를 초기화 하시겠어요?")) {
-//             todos.reset();
-//             todoList.innerHTML = "";
-//         }
-//     });
