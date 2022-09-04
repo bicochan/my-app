@@ -19,7 +19,7 @@ export default function TodoList({ $target, initialState, onChange }) {
         onSuccess: (id) => {
             const newState = [...this.state];
             const targetIndex = newState.findIndex((item) => item.id === id);
-            newState[targetIndex].success = true;
+            newState[targetIndex].success = newState[targetIndex].success ? false : true;
             onChange(newState);
         },
         onRemove: (id) => {
