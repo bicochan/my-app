@@ -1,7 +1,7 @@
 import Clock from "./components/clock/Clock.js";
+import Sticky from "./components/sticky/Sticky.js";
 import Todo from "./components/todo/Todo.js";
 // import { media } from "./module/media.js";
-// import { sticky } from "./module/sticky.js";
 
 import { getLocalStorage, setLocalStorage } from "./utilities/localStorage.js";
 
@@ -39,6 +39,8 @@ export default function App({ $target }) {
             setLocalStorage("todos", data);
         },
     });
+
+    const sticky = new Sticky({ $target: this.$wrap });
 }
 
 // const APP = {

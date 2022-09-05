@@ -214,7 +214,7 @@ body {
     top: 32px;
     right: 32px;
 }
-#addSticky {
+.addSticky {
     width: 32px;
     height: 32px;
     background: #000 url(../images/plus.png) no-repeat center / 20px;
@@ -223,7 +223,7 @@ body {
     font-size: 0;
     color: transparent;
 }
-.stickyWrap #addSticky {
+.stickyWrap .addSticky {
     position: absolute;
     top: 0;
     right: 0;
