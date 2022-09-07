@@ -25,7 +25,6 @@ export const draggable = (handler, target) => {
 
         target.style.top = target.offsetTop - tPos2 + "px";
         target.style.left = target.offsetLeft - tPos1 + "px";
-        // tail.style.zIndex = zIndex;
     };
 
     let closeDragElement = () => {

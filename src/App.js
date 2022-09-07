@@ -9,6 +9,7 @@ export default function App({ $target }) {
     this.state = {
         time: new Date(),
         todo: getLocalStorage("todos") || [],
+        sticky: getLocalStorage("sticky") || [],
     };
 
     this.setState = (newState) => {
@@ -28,6 +29,14 @@ export default function App({ $target }) {
         },
     });
 
+    const sticky = new Sticky({
+        $target: this.$wrap,
+        initialState: this.state.sticky,
+        updateStorage: (data) => {
+            setLocalStorage("sticky", data);
+        },
+    });
+
     this.$inner = document.createElement("div");
     this.$inner.className = "inner";
     this.$wrap.appendChild(this.$inner);
@@ -39,8 +48,6 @@ export default function App({ $target }) {
             setLocalStorage("todos", data);
         },
     });
-
-    const sticky = new Sticky({ $target: this.$wrap });
 }
 
 // const APP = {

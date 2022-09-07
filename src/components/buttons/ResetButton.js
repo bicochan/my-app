@@ -12,7 +12,7 @@ export default function ResetButton({ $target, initialState, onReset }) {
             데이터 초기화<button type="button" class="btnReset">${this.state}</button>
         `;
 
-        document.querySelector("button").addEventListener("click", () => {
+        document.querySelector(".btnReset").addEventListener("click", () => {
             onReset();
         });
     };
