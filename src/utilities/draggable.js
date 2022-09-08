@@ -1,3 +1,5 @@
+import { uponLayer } from "./uponLayer.js";
+
 export const draggable = (handler, target) => {
     let hPos1 = 0,
         hPos2 = 0,
@@ -38,6 +40,8 @@ export const draggable = (handler, target) => {
 
         tPos3 = e.clientX;
         tPos4 = e.clientY;
+
+        uponLayer(target);
 
         document.onmouseup = closeDragElement;
         document.onmousemove = elementDrag;

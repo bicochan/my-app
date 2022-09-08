@@ -1,6 +1,7 @@
 import InputTextarea from "../forms/InputTextarea.js";
 
 import { draggable } from "../../utilities/draggable.js";
+import { uponLayer } from "../../utilities/uponLayer.js";
 
 export default function Notes({ $target, initialState, onbeforeunload }) {
     this.state = initialState;
@@ -11,7 +12,6 @@ export default function Notes({ $target, initialState, onbeforeunload }) {
     };
 
     this.render = (item) => {
-        // TODO: z-index 적용
         const { id, text, width, height, top, left } = item;
 
         this.$element = document.createElement("div");
@@ -28,6 +28,7 @@ export default function Notes({ $target, initialState, onbeforeunload }) {
         });
         inputTextarea.$element.style.width = width || "";
         inputTextarea.$element.style.height = height || "";
+        inputTextarea.$element.addEventListener("mousedown", () => uponLayer(document.querySelector(`#sticky_${id}`)));
 
         $target.appendChild(this.$element);
 
