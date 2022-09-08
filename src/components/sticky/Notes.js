@@ -5,10 +5,13 @@ import { draggable } from "../../utilities/draggable.js";
 export default function Notes({ $target, initialState, onbeforeunload }) {
     this.state = initialState;
 
-    this.setState = () => {};
+    this.setState = (newState) => {
+        this.state = newState;
+        this.render(this.state.pop());
+    };
 
     this.render = (item) => {
-        // TODO: width, height 적용
+        // TODO: z-index 적용
         const { id, text, width, height, top, left } = item;
 
         this.$element = document.createElement("div");
@@ -16,17 +19,15 @@ export default function Notes({ $target, initialState, onbeforeunload }) {
         this.$element.className = "stickyNote";
         this.$element.style.top = top || "";
         this.$element.style.left = left || "";
-        this.$element.innerHTML = `
-            <header class="stickyHeader"><button id="btn_${id}">삭제</button></header>
-        `;
+        this.$element.innerHTML = `<header class="stickyHeader"><button id="btn_${id}">삭제</button></header>`;
 
         const inputTextarea = new InputTextarea({
             $target: this.$element,
             initialState: { text: text || "", placeholder: "메모 입력" },
-            onChange: (text) => {
-                inputTextarea.setState(text);
-            },
+            onChange: (text) => inputTextarea.setState(text),
         });
+        inputTextarea.$element.style.width = width || "";
+        inputTextarea.$element.style.height = height || "";
 
         $target.appendChild(this.$element);
 
@@ -35,9 +36,7 @@ export default function Notes({ $target, initialState, onbeforeunload }) {
         dragHandler.addEventListener("mouseover", () => draggable(dragHandler, dragTarget));
 
         const removeButton = document.querySelector(`#btn_${id}`);
-        removeButton.addEventListener("click", (e) => {
-            document.querySelector(`#sticky_${e.target.id.substring(4) * 1}`).remove();
-        });
+        removeButton.addEventListener("click", (e) => document.querySelector(`#sticky_${e.target.id.substring(4) * 1}`).remove());
     };
 
     this.state.map((item) => this.render(item));

@@ -17,9 +17,12 @@ export default function Title({ $target, initialState, eventBus }) {
 
     const resetButton = new ResetButton({
         $target: this.$element,
-        initialState: "투두리스트 초기화",
-        onReset: () => {
-            if (confirm("정말 투두 리스트를 초기화 하시겠어요?")) {
+        initialState: {
+            type: "TODO",
+            value: "투두리스트 초기화",
+        },
+        onReset: (type) => {
+            if (type === "TODO" && confirm("정말 투두 리스트를 초기화 하시겠어요?")) {
                 eventBus([]);
             }
         },

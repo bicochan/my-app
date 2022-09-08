@@ -14,7 +14,5 @@ export default function InputTextarea({ $target, initialState, onChange }) {
 
     if (this.state) this.render();
 
-    this.$element.addEventListener("input", (e) => {
-        onChange(e.target.value);
-    });
+    this.$element.addEventListener("input", (e) => onChange(e.target.value));
 }
