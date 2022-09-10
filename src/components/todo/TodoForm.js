@@ -17,17 +17,13 @@ export default function TodoForm({ $target, initialState, onSubmit }) {
     const inputText = new InputText({
         $target: this.$element,
         initialState: { text: "", placeholder: "할 일 입력 후 Enter" },
-        onChange: (text) => {
-            this.setState({ ...this.state, todo: text });
-        },
+        onChange: (text) => this.setState({ ...this.state, todo: text }),
     });
 
     const inputTextarea = new InputTextarea({
         $target: this.$element,
         initialState: { text: "", placeholder: "메모 입력" },
-        onChange: (text) => {
-            this.setState({ ...this.state, memo: text });
-        },
+        onChange: (text) => this.setState({ ...this.state, memo: text }),
     });
 
     this.$submit = document.createElement("input");

@@ -1,4 +1,5 @@
 import Clock from "./components/clock/Clock.js";
+import Media from "./components/media/Media.js";
 import Sticky from "./components/sticky/Sticky.js";
 import Todo from "./components/todo/Todo.js";
 // import { media } from "./module/media.js";
@@ -10,6 +11,7 @@ export default function App({ $target }) {
         time: new Date(),
         todo: getLocalStorage("todos") || [],
         sticky: getLocalStorage("sticky") || [],
+        media: getLocalStorage("media") || [],
     };
 
     this.setState = (newState) => {
@@ -24,17 +26,13 @@ export default function App({ $target }) {
     const clock = new Clock({
         $target: this.$wrap,
         initialState: this.state.time,
-        onChange: (newTime) => {
-            this.setState({ time: newTime });
-        },
+        onChange: (newTime) => this.setState({ time: newTime }),
     });
 
     const sticky = new Sticky({
         $target: this.$wrap,
         initialState: this.state.sticky,
-        updateStorage: (data) => {
-            setLocalStorage("sticky", data);
-        },
+        updateStorage: (data) => setLocalStorage("sticky", data),
     });
 
     this.$inner = document.createElement("div");
@@ -44,9 +42,12 @@ export default function App({ $target }) {
     const todo = new Todo({
         $target: this.$inner,
         initialState: this.state.todo,
-        updateStorage: (data) => {
-            setLocalStorage("todos", data);
-        },
+        updateStorage: (data) => setLocalStorage("todos", data),
+    });
+
+    const media = new Media({
+        $target: this.$inner,
+        initialState: this.state.media,
     });
 }
 

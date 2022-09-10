@@ -11,11 +11,7 @@ export default function InputText({ $target, initialState, onChange }) {
     this.$element.placeholder = this.state.placeholder;
     $target.appendChild(this.$element);
 
-    this.render = () => {
-        this.$element.value = this.state.text;
-    };
+    this.render = () => (this.$element.value = this.state.text);
 
-    this.$element.addEventListener("input", (e) => {
-        onChange(e.target.value);
-    });
+    this.$element.addEventListener("input", (e) => onChange(e.target.value));
 }
