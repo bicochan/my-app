@@ -3,7 +3,9 @@ export default function TodoItem({ $target, initialState, onSuccess, onRemove })
 
     this.setState = (newState) => {
         this.state = newState;
-        this.state.map((item) => this.render(item));
+        this.state.map((item) => {
+            this.render(item);
+        });
     };
 
     this.render = (item) => {
@@ -32,5 +34,7 @@ export default function TodoItem({ $target, initialState, onSuccess, onRemove })
         });
     };
 
-    this.state.map((item) => this.render(item));
+    this.state.map((item) => {
+        this.render(item);
+    });
 }

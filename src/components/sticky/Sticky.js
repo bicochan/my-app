@@ -17,7 +17,11 @@ export default function Sticky({ $target, initialState, updateStorage }) {
 
     this.render = () => {
         this.$element.innerHTML = '<button class="addSticky">스티커노트 추가</button>';
-        document.querySelector(".addSticky").addEventListener("click", () => this.setState({ id: Date.now() }));
+
+        const addButton = document.querySelector(".addSticky");
+        addButton.addEventListener("click", () => {
+            this.setState({ id: Date.now() });
+        });
     };
 
     this.render();

@@ -24,23 +24,37 @@ export default function Notes({ $target, initialState, onbeforeunload }) {
         const inputTextarea = new InputTextarea({
             $target: this.$element,
             initialState: { text: text || "", placeholder: "메모 입력" },
-            onChange: (text) => inputTextarea.setState(text),
+            onChange: (text) => {
+                inputTextarea.setState(text);
+            },
         });
         inputTextarea.$element.style.width = width || "";
         inputTextarea.$element.style.height = height || "";
-        inputTextarea.$element.addEventListener("mousedown", () => uponLayer(document.querySelector(`#sticky_${id}`)));
+        inputTextarea.$element.addEventListener("mousedown", () => {
+            const targetEl = document.querySelector(`#sticky_${id}`);
+            uponLayer(targetEl);
+        });
 
         $target.appendChild(this.$element);
 
         const dragTarget = document.querySelector(`#sticky_${id}`);
         const dragHandler = dragTarget.children[0];
-        dragHandler.addEventListener("mouseover", () => draggable(dragHandler, dragTarget));
+        dragHandler.addEventListener("mouseover", () => {
+            draggable(dragHandler, dragTarget);
+        });
 
         const removeButton = document.querySelector(`#btn_${id}`);
-        removeButton.addEventListener("click", (e) => document.querySelector(`#sticky_${e.target.id.substring(4) * 1}`).remove());
+        removeButton.addEventListener("click", (e) => {
+            const targetEl = document.querySelector(`#sticky_${e.target.id.substring(4) * 1}`);
+            targetEl.remove();
+        });
     };
 
-    this.state.map((item) => this.render(item));
+    this.state.map((item) => {
+        this.render(item);
+    });
 
-    window.onbeforeunload = () => onbeforeunload(document.querySelectorAll(".stickyNote"));
+    window.onbeforeunload = () => {
+        onbeforeunload(document.querySelectorAll(".stickyNote"));
+    };
 }

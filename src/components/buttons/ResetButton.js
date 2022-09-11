@@ -8,15 +8,13 @@ export default function ResetButton({ $target, initialState, onReset }) {
     $target.appendChild(this.$element);
 
     this.render = () => {
-        const { type } = this.state;
-        let value = null;
-        if (type === "TODO") {
-            value = "투두리스트 초기화";
-        } else if (type === "MEDIA") {
-            value = "유튜브리스트 초기화";
-        }
-        this.$element.innerHTML = `데이터 초기화<button type="button" class="btnReset">${value}</button>`;
-        document.querySelector(".btnReset").addEventListener("click", () => onReset(type));
+        const { type, value } = this.state;
+        this.$element.innerHTML = `데이터 초기화<button type="button" id=${type} class="btnReset">${value}</button>`;
+
+        const resetButton = document.querySelector(`#${type}`);
+        resetButton.addEventListener("click", () => {
+            onReset(type);
+        });
     };
 
     this.render();

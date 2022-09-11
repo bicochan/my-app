@@ -26,13 +26,17 @@ export default function App({ $target }) {
     const clock = new Clock({
         $target: this.$wrap,
         initialState: this.state.time,
-        onChange: (newTime) => this.setState({ time: newTime }),
+        onChange: (newTime) => {
+            this.setState({ time: newTime });
+        },
     });
 
     const sticky = new Sticky({
         $target: this.$wrap,
         initialState: this.state.sticky,
-        updateStorage: (data) => setLocalStorage("sticky", data),
+        updateStorage: (data) => {
+            setLocalStorage("sticky", data);
+        },
     });
 
     this.$inner = document.createElement("div");
@@ -42,7 +46,9 @@ export default function App({ $target }) {
     const todo = new Todo({
         $target: this.$inner,
         initialState: this.state.todo,
-        updateStorage: (data) => setLocalStorage("todos", data),
+        updateStorage: (data) => {
+            setLocalStorage("todos", data);
+        },
     });
 
     const media = new Media({

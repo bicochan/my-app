@@ -25,7 +25,9 @@ export default function Todo({ $target, initialState, updateStorage }) {
             type: "TODO",
             title: "TODO LIST",
         },
-        eventBus: (data) => this.setState(data),
+        eventBus: (data) => {
+            this.setState(data);
+        },
     });
 
     const todoForm = new TodoForm({
@@ -34,12 +36,16 @@ export default function Todo({ $target, initialState, updateStorage }) {
             todo: "",
             memo: "",
         },
-        onSubmit: (todo) => this.setState([...this.state, ...todo]),
+        onSubmit: (todo) => {
+            this.setState([...this.state, ...todo]);
+        },
     });
 
     const todoList = new TodoList({
         $target: this.$element,
         initialState: this.state,
-        onChange: (todo) => this.setState(todo),
+        onChange: (todo) => {
+            this.setState(todo);
+        },
     });
 }

@@ -186,15 +186,18 @@ export default function Media({ $target, initialState }) {
     this.$element.className = "mediaWrap";
     $target.appendChild(this.$element);
 
+    this.render = () => {};
+
+    this.render();
+
     const title = new Title({
         $target: this.$element,
         initialState: {
             type: "MEDIA",
             title: "YOUTUBE PLAYER",
         },
+        eventBus: (data) => {
+            this.setState(data);
+        },
     });
-
-    this.render = () => {};
-
-    this.render();
 }
