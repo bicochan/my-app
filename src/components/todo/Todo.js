@@ -24,6 +24,7 @@ export default function Todo({ $target, initialState, updateStorage }) {
         initialState: {
             type: "TODO",
             title: "TODO LIST",
+            resetMessage: "정말 투두리스트를 초기화 하시겠어요?",
         },
         eventBus: (data) => {
             this.setState(data);

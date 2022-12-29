@@ -2,7 +2,6 @@ import Clock from "./components/clock/Clock.js";
 import Media from "./components/media/Media.js";
 import Sticky from "./components/sticky/Sticky.js";
 import Todo from "./components/todo/Todo.js";
-// import { media } from "./module/media.js";
 
 import { getLocalStorage, setLocalStorage } from "./utilities/localStorage.js";
 
@@ -54,20 +53,8 @@ export default function App({ $target }) {
     const media = new Media({
         $target: this.$inner,
         initialState: this.state.media,
+        updateStorage: (data) => {
+            setLocalStorage("media", data);
+        },
     });
 }
-
-// const APP = {
-//     reset: function () {
-//         document.querySelector("#allReset").addEventListener("click", function () {
-//             if (confirm("정말 모든 데이터를 초기화 하시겠어요?")) {
-//                 localStorage.removeItem("todos");
-//                 localStorage.removeItem("play-list");
-//                 localStorage.removeItem("sticky-notes");
-//                 location.reload();
-//             }
-//         });
-//     },
-// };
-
-// APP.init();
