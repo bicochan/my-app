@@ -2,9 +2,9 @@
 // 1. 투두리스트 수정 기능
 // 2. 완료 항목 분류 기능
 */
-import Title from "../layout/Title.js";
-import TodoForm from "./TodoForm.js";
-import TodoList from "./TodoList.js";
+import Title from "@components/Title";
+import TodoForm from "@components/TodoForm";
+import TodoList from "@components/TodoList";
 
 export default function Todo({ $target, initialState, updateStorage }) {
   // state

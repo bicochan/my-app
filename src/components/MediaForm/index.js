@@ -1,4 +1,4 @@
-import InputText from "../forms/InputText.js";
+import InputText from "@components/InputText";
 
 export default function MediaForm({ $target, initialState, onSubmit }) {
   // state

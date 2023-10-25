@@ -1,4 +1,4 @@
-import TodoItem from "./TodoItem.js";
+import TodoItem from "@components/TodoItem";
 
 export default function TodoList({ $target, initialState, onChange }) {
   // state

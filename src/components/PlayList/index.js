@@ -1,4 +1,4 @@
-import ListItem from "./ListItem.js";
+import ListItem from "@components/ListItem";
 
 export default function PlayList({
   $target,

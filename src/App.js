@@ -1,9 +1,9 @@
-import Clock from "./components/clock/Clock.js";
-import Media from "./components/media/Media.js";
-import Sticky from "./components/sticky/Sticky.js";
-import Todo from "./components/todo/Todo.js";
+import Clock from "./components/Clock";
+import Media from "./components/Media";
+import Sticky from "./components/Sticky";
+import Todo from "./components/Todo";
 
-import { getLocalStorage, setLocalStorage } from "./utilities/localStorage.js";
+import { getLocalStorage, setLocalStorage } from "./utils/localStorage";
 
 export default function App({ $target }) {
   // state

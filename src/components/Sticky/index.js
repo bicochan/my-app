@@ -1,7 +1,7 @@
 /* TODO
 // 1. 텍스트 전체 복사 기능
 */
-import Notes from "./Notes.js";
+import Note from "@components/Note";
 
 export default function Sticky({ $target, initialState, updateStorage }) {
   // state
@@ -29,7 +29,7 @@ export default function Sticky({ $target, initialState, updateStorage }) {
 
   this.render();
 
-  const notes = new Notes({
+  const notes = new Note({
     $target: this.$element,
     initialState: this.state,
     onbeforeunload: (data) => {

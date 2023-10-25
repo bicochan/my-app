@@ -1,4 +1,4 @@
-import ResetButton from "../buttons/ResetButton.js";
+import ResetButton from "@components/ResetButton";
 
 export default function Title({ $target, initialState, eventBus }) {
   // state

@@ -2,10 +2,10 @@
 // 1. 한 곡/전곡 반복 기능
 // 2. 리스트 자동 추가 기능(클립보드 활용)
 */
-import Title from "../layout/Title.js";
-import Player from "./Player.js";
-import MediaForm from "./MediaForm.js";
-import PlayList from "./PlayList.js";
+import Title from "@components/Title";
+import Player from "@components/Player";
+import MediaForm from "@components/MediaForm";
+import PlayList from "@components/PlayList";
 
 export default function Media({ $target, initialState, updateStorage }) {
   // state

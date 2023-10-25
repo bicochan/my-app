@@ -1,9 +1,9 @@
-import InputTextarea from "../forms/InputTextarea.js";
+import InputTextarea from "@components/InputTextarea";
 
-import { draggable } from "../../utilities/draggable.js";
-import { uponLayer } from "../../utilities/uponLayer.js";
+import { draggable } from "@utils/draggable";
+import { uponLayer } from "@utils/uponLayer";
 
-export default function Notes({ $target, initialState, onbeforeunload }) {
+export default function Note({ $target, initialState, onbeforeunload }) {
   // state
   this.state = initialState;
 

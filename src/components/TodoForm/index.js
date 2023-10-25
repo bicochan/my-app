@@ -1,5 +1,5 @@
-import InputText from "../forms/InputText.js";
-import InputTextarea from "../forms/InputTextarea.js";
+import InputText from "@components/InputText";
+import InputTextarea from "@components/InputTextarea";
 
 export default function TodoForm({ $target, initialState, onSubmit }) {
   // state
