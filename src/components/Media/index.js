@@ -6,6 +6,7 @@ import Title from "@components/Title";
 import Player from "@components/Player";
 import MediaForm from "@components/MediaForm";
 import PlayList from "@components/PlayList";
+import SignIn from "@components/SignIn";
 
 export default function Media({ $target, initialState, updateStorage }) {
   // state
@@ -34,75 +35,80 @@ export default function Media({ $target, initialState, updateStorage }) {
     },
   });
 
-  const player = new Player({
+  const signIn = new SignIn({
     $target: this.$element,
-    initialState: {
-      videoId: this.state[0]?.video_id,
-    },
-    onStateChange: (e) => {
-      onPlayerStateChange(e);
-    },
+    initialState: {},
   });
 
-  const mediaForm = new MediaForm({
-    $target: this.$element,
-    initialState: {
-      placeholder: "유튜브 공유하기 링크 입력",
-    },
-    onSubmit: (data) => {
-      const shareId = data.substring(data.indexOf(".be/") + 4);
-      fetchMediaData(shareId);
-    },
-  });
+  // const player = new Player({
+  //   $target: this.$element,
+  //   initialState: {
+  //     videoId: this.state[0]?.video_id,
+  //   },
+  //   onStateChange: (e) => {
+  //     onPlayerStateChange(e);
+  //   },
+  // });
 
-  const playList = new PlayList({
-    $target: this.$element,
-    initialState: this.state,
-    onPlaying: (id) => {
-      player.media.loadVideoById(id);
-    },
-    onChange: (list) => {
-      this.setState(list);
-    },
-  });
+  // const mediaForm = new MediaForm({
+  //   $target: this.$element,
+  //   initialState: {
+  //     placeholder: "유튜브 공유하기 링크 입력",
+  //   },
+  //   onSubmit: (data) => {
+  //     const shareId = data.substring(data.indexOf(".be/") + 4);
+  //     fetchMediaData(shareId);
+  //   },
+  // });
+
+  // const playList = new PlayList({
+  //   $target: this.$element,
+  //   initialState: this.state,
+  //   onPlaying: (id) => {
+  //     player.media.loadVideoById(id);
+  //   },
+  //   onChange: (list) => {
+  //     this.setState(list);
+  //   },
+  // });
 
   // methods
-  const fetchMediaData = async (id) => {
-    const url = `https://www.googleapis.com/youtube/v3/videos?id=${id}&key=AIzaSyDEofmqOL3deN_SVX8bNGKidVAA5fZikKQ&fields=items(id,snippet(title))&part=snippet`;
-    const mediaData = {
-      video_id: id,
-      title: "",
-    };
+  // const fetchMediaData = async (id) => {
+  //   const url = `https://www.googleapis.com/youtube/v3/videos?id=${id}&key=AIzaSyDEofmqOL3deN_SVX8bNGKidVAA5fZikKQ&fields=items(id,snippet(title))&part=snippet`;
+  //   const mediaData = {
+  //     video_id: id,
+  //     title: "",
+  //   };
 
-    const data = await fetch(url)
-      .then((res) => res.json())
-      .catch((err) => console.log(err));
-    mediaData.title = data.items[0].snippet.title;
+  //   const data = await fetch(url)
+  //     .then((res) => res.json())
+  //     .catch((err) => console.log(err));
+  //   mediaData.title = data.items[0].snippet.title;
 
-    const duplication = (item) => item.video_id === mediaData.video_id;
-    if (this.state.some(duplication)) return;
+  //   const duplication = (item) => item.video_id === mediaData.video_id;
+  //   if (this.state.some(duplication)) return;
 
-    this.setState([...this.state, mediaData]);
-  };
+  //   this.setState([...this.state, mediaData]);
+  // };
 
-  const onPlayerStateChange = (e) => {
-    if (e.data === -1) {
-      // before start
-    } else if (e.data === 0) {
-      // end
-      const mediaId = player.media.playerInfo.videoData.video_id;
-      const mediaIndex = this.state.findIndex(
-        (list) => list.video_id === mediaId
-      );
+  // const onPlayerStateChange = (e) => {
+  //   if (e.data === -1) {
+  //     // before start
+  //   } else if (e.data === 0) {
+  //     // end
+  //     const mediaId = player.media.playerInfo.videoData.video_id;
+  //     const mediaIndex = this.state.findIndex(
+  //       (list) => list.video_id === mediaId
+  //     );
 
-      if (this.state.length - 1 === mediaIndex) return;
-      player.media.loadVideoById(this.state[mediaIndex + 1].video_id);
-    } else if (e.data === 1) {
-      // playing
-    } else if (e.data === 2) {
-      // pause
-    } else if (e.data === 3) {
-      // buffering
-    }
-  };
+  //     if (this.state.length - 1 === mediaIndex) return;
+  //     player.media.loadVideoById(this.state[mediaIndex + 1].video_id);
+  //   } else if (e.data === 1) {
+  //     // playing
+  //   } else if (e.data === 2) {
+  //     // pause
+  //   } else if (e.data === 3) {
+  //     // buffering
+  //   }
+  // };
 }
