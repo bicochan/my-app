@@ -1,16 +1,29 @@
 require("dotenv").config();
 
 const express = require("express");
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require("webpack-hot-middleware");
+const webpackConfig = require("./webpack.config");
 const { google } = require("googleapis");
 const { OAuth2Client } = require("google-auth-library");
 
 const app = express();
+const compiler = webpack(webpackConfig);
 const port = 3001;
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.path,
+  })
+);
+
+app.use(webpackHotMiddleware(compiler));
 
 app.use(express.static(__dirname + "/"));
 
